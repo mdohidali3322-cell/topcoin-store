@@ -14,6 +14,7 @@
             --card-bg: #ffffff;
             --text-dark: #0f172a;
             --text-muted: #64748b;
+            --yt-red: #ff0000;
         }
 
         * {
@@ -202,11 +203,18 @@
             opacity: 0.8;
         }
         .card-icon {
-            font-size: 36px;
+            font-size: 34px;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 42px;
+        }
+        .card-icon svg {
+            display: block;
         }
         .card-title {
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 800;
             color: #0f172a;
         }
@@ -225,6 +233,7 @@
             border-radius: 8px;
         }
         .badge-active { background: #dcfce7; color: #15803d; }
+        .badge-yt { background: #ffe4e6; color: #e11d48; }
         .badge-soon { background: #f1f5f9; color: #64748b; }
 
         /* ৫. পপ-আপ ফর্ম */
@@ -250,7 +259,6 @@
         .form-row label { font-size: 12px; font-weight: 700; display: block; margin-bottom: 5px; }
         .form-row input, .form-row select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 13px; outline: none; }
         
-        /* কাস্টম স্ক্রিনশট আপলোড বক্স */
         .upload-box {
             border: 2px dashed var(--primary-orange);
             background: #fffaf5;
@@ -259,9 +267,7 @@
             text-align: center;
             cursor: pointer;
         }
-        .upload-box input[type="file"] {
-            display: none;
-        }
+        .upload-box input[type="file"] { display: none; }
         .upload-label {
             font-size: 12px;
             font-weight: 700;
@@ -275,6 +281,22 @@
 
         .pay-card { background: #fdfaf6; border: 1px dashed var(--primary-orange); padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .submit-btn { width: 100%; background: #0f172a; color: #fff; padding: 14px; border: none; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 0;
+        }
 
         /* ৬. ক্লিন বটম নেভিগেশন বার */
         .bottom-nav {
@@ -351,13 +373,13 @@
     </div>
 
     <!-- ৪. সার্ভিস লিস্ট (গ্রিড) -->
-    <div class="section-header">⚡ Select a Service to Sell</div>
+    <div class="section-header">⚡ Select a Service</div>
 
     <div class="services-grid" id="servicesGrid">
         <!-- জাভাস্ক্রিপ্ট স্বয়ংক্রিয়ভাবে কার্ডগুলো বসাবে -->
     </div>
 
-    <!-- ৫. ডলার সেল করার ফর্ম (স্ক্রিনশট আপলোড সহ) -->
+    <!-- ৫. ডলার সেল করার ফর্ম -->
     <div class="modal" id="dollarModal">
         <div class="modal-body">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -391,7 +413,6 @@
                 <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyPayId()">📋 Copy</button>
             </div>
 
-            <!-- ডলার স্ক্রিনশট আপলোড অপশন -->
             <div class="form-row">
                 <label>📸 পেমেন্টের স্ক্রিনশট দিন (বাধ্যতামূলক):</label>
                 <div class="upload-box" onclick="document.getElementById('dPhotoInput').click()">
@@ -408,7 +429,7 @@
         </div>
     </div>
 
-    <!-- ৬. কয়েন সেল করার ফর্ম (স্ক্রিনশট আপলোড সহ) -->
+    <!-- ৬. Top Coin সেল করার ফর্ম -->
     <div class="modal" id="coinModal">
         <div class="modal-body">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -445,12 +466,11 @@
             <div class="pay-card">
                 <div>
                     <div style="font-size: 11px; color: #64748b;">কয়েন পাঠানোর ইউজারনেম:</div>
-                    <div style="font-size: 15px; font-weight: 800;" id="coinUserText">moinraj2026</div>
+                    <div style="font-size: 15px; font-weight: 800;" id="coinUserText">top.coin.buyer</div>
                 </div>
                 <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyCoinUser()">📋 Copy</button>
             </div>
 
-            <!-- কয়েন স্ক্রিনশট আপলোড অপশন -->
             <div class="form-row">
                 <label>📸 কয়েন পাঠানোর স্ক্রিনশট দিন (বাধ্যতামূলক):</label>
                 <div class="upload-box" onclick="document.getElementById('cPhotoInput').click()">
@@ -463,7 +483,89 @@
         </div>
     </div>
 
-    <!-- ৭. বটম নেভিগেশন বার -->
+    <!-- ৭. Coinsta Coin সেল করার ফর্ম (নতুন যুক্ত করা হয়েছে) -->
+    <div class="modal" id="coinstaModal">
+        <div class="modal-body">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-size: 16px; font-weight: 800;">⭐ Coinsta Coin Sell</h3>
+                <span style="font-size: 22px; cursor: pointer;" onclick="closeModal('coinstaModal')">✕</span>
+            </div>
+
+            <div class="form-row">
+                <label>কত Coinsta কয়েন বিক্রি করবেন:</label>
+                <input type="number" id="csAmount" placeholder="সর্বনিম্ন 5000 কয়েন">
+            </div>
+
+            <div class="form-row">
+                <label>পেমেন্ট স্পিড:</label>
+                <select id="csSpeed">
+                    <option value="ইনস্ট্যান্ট পেমেন্ট ⚡">ইনস্ট্যান্ট পেমেন্ট ⚡ (রেট কম - দ্রুত পেমেন্ট)</option>
+                    <option value="রেগুলার পেমেন্ট ⏳">রেগুলার পেমেন্ট ⏳ (রেট বেশি - সময় লাগবে)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label>টাকা নেওয়ার মাধ্যম:</label>
+                <select id="csMethod">
+                    <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
+                    <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label>আপনার বিকাশ/নগদ নম্বর:</label>
+                <input type="number" id="csPhone" placeholder="017XXXXXXXX">
+            </div>
+
+            <div class="pay-card">
+                <div>
+                    <div style="font-size: 11px; color: #64748b;">Coinsta পাঠানোর ইউজারনেম:</div>
+                    <div style="font-size: 15px; font-weight: 800;" id="coinstaUserText">osimali745@gmail.com</div>
+                </div>
+                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyCoinstaUser()">📋 Copy</button>
+            </div>
+
+            <div class="form-row">
+                <label>📸 Coinsta পাঠানোর স্ক্রিনশট দিন (বাধ্যতামূলক):</label>
+                <div class="upload-box" onclick="document.getElementById('csPhotoInput').click()">
+                    <span class="upload-label" id="csPhotoText">📁 গ্যালারি থেকে স্ক্রিনশট সিলেক্ট করুন</span>
+                    <input type="file" id="csPhotoInput" accept="image/*" onchange="previewFileName('csPhotoInput', 'csPhotoText')">
+                </div>
+            </div>
+
+            <button class="submit-btn" id="csSubmitBtn" onclick="sendCoinstaOrder()">✅ Coinsta অর্ডার নিশ্চিত করুন</button>
+        </div>
+    </div>
+
+    <!-- ৮. ইউটিউব ভিডিও গ্যালারি পপ-আপ -->
+    <div class="modal" id="ytVideoModal">
+        <div class="modal-body">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-size: 16px; font-weight: 800; color: var(--yt-red); display: flex; align-items: center; gap: 6px;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" style="vertical-align: middle;">
+                        <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+                        <polygon fill="#FFFFFF" points="9.545,15.568 15.818,12 9.545,8.432"/>
+                    </svg>
+                    আমাদের ইউটিউব ভিডিও
+                </h3>
+                <span style="font-size: 22px; cursor: pointer;" onclick="closeModal('ytVideoModal')">✕</span>
+            </div>
+
+            <div class="video-wrapper">
+                <iframe id="ytPlayer" src="https://youtube.com/@moinraj7424?si=6Bt1UUnvL9AmE19C" allowfullscreen></iframe>
+            </div>
+
+            <div style="font-size: 12px; color: #64748b; line-height: 1.5; margin-bottom: 14px;">
+                💡 আমাদের ইউটিউব চ্যানেলে নিয়মিত ইনকাম ট্রিকস ও পেমেন্ট প্রুফ ভিডিও আপলোড করা হয়।
+            </div>
+
+            <button class="submit-btn" style="background: var(--yt-red);" onclick="openYouTubeChannel()">
+                🔴 সরাসরি YouTube Channel-এ সব ভিডিও দেখুন
+            </button>
+        </div>
+    </div>
+
+    <!-- ৯. বটম নেভিগেশন বার -->
     <div class="bottom-nav">
         <div class="nav-link active">
             <span style="font-size: 20px;">🏠</span>
@@ -477,23 +579,94 @@
 
     <script>
         // ========================================================
-        // ------------------ আপনার সেটিংস ও লিংক -------------------
+        // ------------------ আপনার লিংক ও কনফিগারেশন ---------------
         // ========================================================
-        const ADSTERRA_DIRECT_LINK = "https://www.profitablecpmrate.com/আপনার_ডাইরেক্ট_লিংক"; 
+        const ADSTERRA_DIRECT_LINK = "https://asiafilm.org/4/e506cb68e7bc27e296987be152a29ce0"; 
         const BINANCE_PAY_ID = "835868155";
-        const TOPFOLLOW_USERNAME = "moinraj2026";
+        const TOPFOLLOW_USERNAME = "top.coin.buyer";
+        const COINSTA_USERNAME = "osimali745@gmail.com"; // আপনার Coinsta ইউজারনেম
         const DOLLAR_RATE = 120;
         const SUPPORT_LINK = "https://t.me/Moin1239";
 
-        // টোকেন ভাগ করে রাখা হয়েছে যাতে গিটহাব কোনো সতর্কবার্তা না পাঠায়
+        // --- আপনার ইউটিউব চ্যানেল লিংক ও ভিডিও আইডি ---
+        const YOUTUBE_CHANNEL_LINK = "https://youtube.com/@moinraj7424?si=TJ2xDDLmlnwvKIGI"; 
+        const YOUTUBE_EMBED_VIDEO_ID = "https://youtube.com/@moinraj7424?si=6Bt1UUnvL9AmE19C"; 
+
         const BOT_TOKEN = "8665209596:" + "AAHQV2d5TqzQV3pRr3i7-BOYKprSmfZeI2E";
         const ADMIN_ID = "8608936185";
 
+        const YT_SVG_ICON = `
+            <svg viewBox="0 0 24 24" width="40" height="40">
+                <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+                <polygon fill="#FFFFFF" points="9.545,15.568 15.818,12 9.545,8.432"/>
+            </svg>
+        `;
+
+        // কার্ড লিস্ট (Coinsta সহ)
         const ALL_SERVICES = [
-            { id: "dollar", title: "Binance Dollar", desc: "ডলার সেল করে টাকা নিন", icon: "💵", active: true },
-            { id: "coin", title: "Top Coin Sell", desc: "New & Old কয়েন সেল", icon: "🪙", active: true },
-            { id: "whatsapp", title: "WhatsApp Account", desc: "হোয়াটসঅ্যাপ একাউন্ট", icon: "💬", active: false },
-            { id: "proxy_vpn", title: "Proxy & VPN", desc: "প্রিমিয়াম প্রক্সি / ভিপিএন", icon: "🌐", active: false }
+            { 
+                id: "dollar", 
+                title: "Binance Dollar", 
+                desc: "ডলার সেল করে টাকা নিন", 
+                icon: "💵", 
+                badgeText: "AVAILABLE",
+                badgeClass: "badge-active",
+                active: true 
+            },
+            { 
+                id: "coin", 
+                title: "Top Coin Sell", 
+                desc: "New & Old কয়েন সেল", 
+                icon: "🪙", 
+                badgeText: "AVAILABLE",
+                badgeClass: "badge-active",
+                active: true 
+            },
+            { 
+                id: "coinsta", 
+                title: "Coinsta Coin Sell", 
+                desc: "Coinsta কয়েন সেল করুন", 
+                icon: "⭐", 
+                badgeText: "AVAILABLE",
+                badgeClass: "badge-active",
+                active: true 
+            },
+            { 
+                id: "yt_channel", 
+                title: "YouTube Channel", 
+                desc: "অফিসিয়াল চ্যানেল ভিজিট", 
+                icon: YT_SVG_ICON, 
+                badgeText: "VISIT",
+                badgeClass: "badge-yt",
+                active: true 
+            },
+            { 
+                id: "yt_videos", 
+                title: "YouTube Videos", 
+                desc: "অ্যাপে সব ভিডিও দেখুন", 
+                icon: YT_SVG_ICON, 
+                badgeText: "WATCH",
+                badgeClass: "badge-yt",
+                active: true 
+            },
+            { 
+                id: "whatsapp", 
+                title: "WhatsApp Account", 
+                desc: "হোয়াটসঅ্যাপ একাউন্ট", 
+                icon: "💬", 
+                badgeText: "COMING SOON",
+                badgeClass: "badge-soon",
+                active: false 
+            },
+            { 
+                id: "proxy_vpn", 
+                title: "Proxy & VPN", 
+                desc: "প্রিমিয়াম প্রক্সি / ভিপিএন", 
+                icon: "🌐", 
+                badgeText: "COMING SOON",
+                badgeClass: "badge-soon",
+                active: false 
+            }
         ];
         // ========================================================
 
@@ -519,6 +692,20 @@
 
         document.getElementById('payIdText').innerText = BINANCE_PAY_ID;
         document.getElementById('coinUserText').innerText = TOPFOLLOW_USERNAME;
+        document.getElementById('coinstaUserText').innerText = COINSTA_USERNAME;
+        document.getElementById('ytPlayer').src = `https://www.youtube.com/embed/${YOUTUBE_EMBED_VIDEO_ID}`;
+
+        function openYouTubeChannel() {
+            if (tg && tg.openLink) {
+                tg.openLink(YOUTUBE_CHANNEL_LINK);
+            } else {
+                window.open(YOUTUBE_CHANNEL_LINK, '_blank');
+            }
+        }
+
+        function openYouTubeVideosModal() {
+            document.getElementById('ytVideoModal').style.display = 'flex';
+        }
 
         function handleAdClick() {
             if (tg && tg.openLink) {
@@ -537,8 +724,8 @@
                 card.onclick = () => onServiceClick(item);
 
                 card.innerHTML = `
-                    <div class="badge ${item.active ? 'badge-active' : 'badge-soon'}">
-                        ${item.active ? 'AVAILABLE' : 'COMING SOON'}
+                    <div class="badge ${item.badgeClass}">
+                        ${item.badgeText}
                     </div>
                     <div class="card-icon">${item.icon}</div>
                     <div class="card-title">${item.title}</div>
@@ -564,6 +751,12 @@
                 document.getElementById('dollarModal').style.display = 'flex';
             } else if (item.id === "coin") {
                 document.getElementById('coinModal').style.display = 'flex';
+            } else if (item.id === "coinsta") {
+                document.getElementById('coinstaModal').style.display = 'flex';
+            } else if (item.id === "yt_channel") {
+                openYouTubeChannel();
+            } else if (item.id === "yt_videos") {
+                openYouTubeVideosModal();
             }
         }
 
@@ -581,6 +774,11 @@
             alert("✅ TopFollow ইউজারনেম কপি করা হয়েছে!");
         }
 
+        function copyCoinstaUser() {
+            navigator.clipboard.writeText(COINSTA_USERNAME);
+            alert("✅ Coinsta ইউজারনেম কপি করা হয়েছে!");
+        }
+
         function calcDollarTaka() {
             const val = parseFloat(document.getElementById('dAmount').value) || 0;
             const total = val * DOLLAR_RATE;
@@ -595,7 +793,6 @@
             }
         }
 
-        // ছবি সিলেক্ট করলে ফাইলের নাম দেখানো
         function previewFileName(inputId, textId) {
             const input = document.getElementById(inputId);
             if (input.files && input.files[0]) {
@@ -603,7 +800,7 @@
             }
         }
 
-        // ডলার অর্ডার এবং আসল ছবি অ্যাডমিনকে পাঠানোর ফাংশন
+        // ডলার অর্ডার সাবমিট
         function sendDollarOrder() {
             const amount = document.getElementById('dAmount').value;
             const method = document.getElementById('dMethod').value;
@@ -670,7 +867,7 @@
             });
         }
 
-        // কয়েন অর্ডার এবং আসল ছবি অ্যাডমিনকে পাঠানোর ফাংশন
+        // Top Coin অর্ডার সাবমিট
         function sendCoinOrder() {
             const amount = document.getElementById('cAmount').value;
             const speed = document.getElementById('cSpeed').value;
@@ -695,10 +892,10 @@
             submitBtn.innerText = "⏳ আপলোড হচ্ছে...";
             submitBtn.disabled = true;
 
-            const captionMsg = `🔔 **নতুন কয়েন বিক্রির অর্ডার (Web App)!**\n\n` +
+            const captionMsg = `🔔 **নতুন Top Coin বিক্রির অর্ডার (Web App)!**\n\n` +
                                `👤 কাস্টমার: ${currentUser.first_name} (@${currentUser.username || 'নেই'})\n` +
                                `🆔 Telegram ID: \`${currentUser.id}\`\n` +
-                               `🪙 কয়েন পরিমাণ: ${amount}\n` +
+                               `🪙 কয়েন পরিমাণ: ${amount} Top Coins\n` +
                                `⚡ ধরন: ${speed}\n` +
                                `💳 মেথড: ${method}\n` +
                                `📞 পেমেন্ট নম্বর: \`${phone}\``;
@@ -723,7 +920,7 @@
                     localStorage.setItem('user_sold_coins_' + currentUser.id, cur);
                     updateStatsUI();
 
-                    alert("✅ আপনার কয়েন অর্ডার ও স্ক্রিনশট সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে টাকা পাঠিয়ে দেবে।");
+                    alert("✅ আপনার Top Coin অর্ডার ও স্ক্রিনশট সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে টাকা পাঠিয়ে দেবে।");
                     closeModal('coinModal');
                 } else {
                     alert("❌ স্ক্রিনশট পাঠাতে সমস্যা হয়েছে, পুনরায় চেষ্টা করুন।");
@@ -734,6 +931,73 @@
                 submitBtn.disabled = false;
                 alert("✅ অর্ডার সাবমিট হয়েছে!");
                 closeModal('coinModal');
+            });
+        }
+
+        // Coinsta Coin অর্ডার সাবমিট (নতুন যুক্ত করা হয়েছে)
+        function sendCoinstaOrder() {
+            const amount = document.getElementById('csAmount').value;
+            const speed = document.getElementById('csSpeed').value;
+            const method = document.getElementById('csMethod').value;
+            const phone = document.getElementById('csPhone').value;
+            const photoInput = document.getElementById('csPhotoInput');
+
+            if (!amount || amount < 5000) {
+                alert("⚠️ সর্বনিম্ন ৫০০০ Coinsta কয়েন লিখতে হবে।");
+                return;
+            }
+            if (!phone || phone.length < 11) {
+                alert("⚠️ সঠিক বিকাশ বা নগদ নম্বর লিখুন।");
+                return;
+            }
+            if (!photoInput.files || photoInput.files.length === 0) {
+                alert("⚠️ অনুগ্রহ করে Coinsta কয়েন পাঠানোর স্ক্রিনশট আপলোড করুন!");
+                return;
+            }
+
+            const submitBtn = document.getElementById('csSubmitBtn');
+            submitBtn.innerText = "⏳ আপলোড হচ্ছে...";
+            submitBtn.disabled = true;
+
+            const captionMsg = `🔔 **নতুন Coinsta কয়েন বিক্রির অর্ডার (Web App)!**\n\n` +
+                               `👤 কাস্টমার: ${currentUser.first_name} (@${currentUser.username || 'নেই'})\n` +
+                               `🆔 Telegram ID: \`${currentUser.id}\`\n` +
+                               `⭐ Coinsta পরিমাণ: ${amount} Coinsta Coins\n` +
+                               `⚡ ধরন: ${speed}\n` +
+                               `💳 মেথড: ${method}\n` +
+                               `📞 পেমেন্ট নম্বর: \`${phone}\``;
+
+            const formData = new FormData();
+            formData.append('chat_id', ADMIN_ID);
+            formData.append('photo', photoInput.files[0]);
+            formData.append('caption', captionMsg);
+            formData.append('parse_mode', 'Markdown');
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                submitBtn.innerText = "✅ Coinsta অর্ডার নিশ্চিত করুন";
+                submitBtn.disabled = false;
+                if (data.ok) {
+                    let cur = parseInt(localStorage.getItem('user_sold_coins_' + currentUser.id) || "0");
+                    cur += parseInt(amount);
+                    localStorage.setItem('user_sold_coins_' + currentUser.id, cur);
+                    updateStatsUI();
+
+                    alert("✅ আপনার Coinsta কয়েন অর্ডার ও স্ক্রিনশট সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে টাকা পাঠিয়ে দেবে।");
+                    closeModal('coinstaModal');
+                } else {
+                    alert("❌ স্ক্রিনশট পাঠাতে সমস্যা হয়েছে, পুনরায় চেষ্টা করুন।");
+                }
+            })
+            .catch(() => {
+                submitBtn.innerText = "✅ Coinsta অর্ডার নিশ্চিত করুন";
+                submitBtn.disabled = false;
+                alert("✅ অর্ডার সাবমিট হয়েছে!");
+                closeModal('coinstaModal');
             });
         }
     </script>
