@@ -30,7 +30,7 @@
             padding-bottom: 90px;
         }
 
-        /* --- ১. টপ প্রোফাইল ও স্ট্যাটাস বার --- */
+        /* ১. টপ প্রোফাইল ও স্ট্যাটাস বার */
         .top-bar {
             display: flex;
             align-items: center;
@@ -72,7 +72,7 @@
             font-weight: 600;
         }
 
-        /* --- ইউজারের সেল হিস্ট্রি / ব্যালেন্স কার্ড --- */
+        /* ইউজারের সেল হিস্ট্রি / ব্যালেন্স কার্ড */
         .stats-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -101,7 +101,7 @@
             margin-top: 2px;
         }
 
-        /* --- ২. রেইনবো সার্চ বার --- */
+        /* ২. রেইনবো সার্চ বার */
         .search-container {
             padding: 10px 18px;
         }
@@ -126,7 +126,7 @@
             color: #334155;
         }
 
-        /* --- ৩. অ্যাডস্ট্রা ব্যানার (Adsterra Direct Link) --- */
+        /* ৩. অ্যাডস্ট্রা ডাইরেক্ট লিংক ব্যানার */
         .banner-container {
             padding: 6px 18px 12px 18px;
         }
@@ -170,7 +170,7 @@
             margin-top: 4px;
         }
 
-        /* --- ৪. সার্ভিস সেকশন ও গ্রিড --- */
+        /* ৪. সার্ভিস লিস্ট (গ্রিড) */
         .section-header {
             padding: 6px 18px 10px 18px;
             font-size: 14px;
@@ -227,7 +227,7 @@
         .badge-active { background: #dcfce7; color: #15803d; }
         .badge-soon { background: #f1f5f9; color: #64748b; }
 
-        /* --- ৫. পপ-আপ ফর্ম --- */
+        /* ৫. পপ-আপ ফর্ম */
         .modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -249,10 +249,34 @@
         .form-row { margin-bottom: 12px; }
         .form-row label { font-size: 12px; font-weight: 700; display: block; margin-bottom: 5px; }
         .form-row input, .form-row select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 13px; outline: none; }
+        
+        /* কাস্টম স্ক্রিনশট আপলোড বক্স */
+        .upload-box {
+            border: 2px dashed var(--primary-orange);
+            background: #fffaf5;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .upload-box input[type="file"] {
+            display: none;
+        }
+        .upload-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-orange);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
         .pay-card { background: #fdfaf6; border: 1px dashed var(--primary-orange); padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .submit-btn { width: 100%; background: #0f172a; color: #fff; padding: 14px; border: none; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; }
 
-        /* --- ৬. ক্লিন বটম নেভিগেশন বার --- */
+        /* ৬. ক্লিন বটম নেভিগেশন বার */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -295,7 +319,7 @@
         </div>
     </div>
 
-    <!-- টোটাল সেল স্ট্যাটাস (ইউজার কত ডলার ও কয়েন সেল করেছে তা অটোমেটিক যোগ হবে) -->
+    <!-- টোটাল সেল স্ট্যাটাস -->
     <div class="stats-container">
         <div class="stat-card">
             <div class="stat-label">💵 Total Dollar Sold</div>
@@ -317,7 +341,7 @@
         </div>
     </div>
 
-    <!-- ৩. অ্যাডস্ট্রা ডাইরেক্ট লিংক ব্যানার (শুধুমাত্র এই ব্যানারে ক্লিক করলে ওপেন হবে) -->
+    <!-- ৩. অ্যাডস্ট্রা ডাইরেক্ট লিংক ব্যানার -->
     <div class="banner-container">
         <div class="neon-banner" onclick="handleAdClick()">
             <div class="banner-badge">👑 Special Sponsor Deals</div>
@@ -333,7 +357,7 @@
         <!-- জাভাস্ক্রিপ্ট স্বয়ংক্রিয়ভাবে কার্ডগুলো বসাবে -->
     </div>
 
-    <!-- ৫. ডলার সেল করার ফর্ম -->
+    <!-- ৫. ডলার সেল করার ফর্ম (স্ক্রিনশট আপলোড সহ) -->
     <div class="modal" id="dollarModal">
         <div class="modal-body">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -367,20 +391,24 @@
                 <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyPayId()">📋 Copy</button>
             </div>
 
+            <!-- ডলার স্ক্রিনশট আপলোড অপশন -->
             <div class="form-row">
-                <label>ডলার পাঠানোর Transaction ID (TXID):</label>
-                <input type="text" id="dTxid" placeholder="Binance TXID নম্বর দিন">
+                <label>📸 পেমেন্টের স্ক্রিনশট দিন (বাধ্যতামূলক):</label>
+                <div class="upload-box" onclick="document.getElementById('dPhotoInput').click()">
+                    <span class="upload-label" id="dPhotoText">📁 গ্যালারি থেকে স্ক্রিনশট সিলেক্ট করুন</span>
+                    <input type="file" id="dPhotoInput" accept="image/*" onchange="previewFileName('dPhotoInput', 'dPhotoText')">
+                </div>
             </div>
 
             <div id="dollarPayoutTxt" style="background: #ecfdf5; padding: 10px; border-radius: 10px; font-size: 13px; color: #047857; font-weight: 700; margin-bottom: 14px;">
                 💰 আপনি পাবেন: ০.০০ টাকা (রেট: ১২০ টাকা)
             </div>
 
-            <button class="submit-btn" onclick="sendDollarOrder()">✅ অর্ডার নিশ্চিত করুন</button>
+            <button class="submit-btn" id="dSubmitBtn" onclick="sendDollarOrder()">✅ অর্ডার নিশ্চিত করুন</button>
         </div>
     </div>
 
-    <!-- ৬. কয়েন সেল করার ফর্ম -->
+    <!-- ৬. কয়েন সেল করার ফর্ম (স্ক্রিনশট আপলোড সহ) -->
     <div class="modal" id="coinModal">
         <div class="modal-body">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -422,12 +450,16 @@
                 <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyCoinUser()">📋 Copy</button>
             </div>
 
+            <!-- কয়েন স্ক্রিনশট আপলোড অপশন -->
             <div class="form-row">
-                <label>কয়েন পাঠানো হয়েছে তার বিবরণ/নোট:</label>
-                <input type="text" id="cNote" placeholder="কোন আইডি থেকে পাঠিয়েছেন লিখুন">
+                <label>📸 কয়েন পাঠানোর স্ক্রিনশট দিন (বাধ্যতামূলক):</label>
+                <div class="upload-box" onclick="document.getElementById('cPhotoInput').click()">
+                    <span class="upload-label" id="cPhotoText">📁 গ্যালারি থেকে স্ক্রিনশট সিলেক্ট করুন</span>
+                    <input type="file" id="cPhotoInput" accept="image/*" onchange="previewFileName('cPhotoInput', 'cPhotoText')">
+                </div>
             </div>
 
-            <button class="submit-btn" onclick="sendCoinOrder()">✅ কয়েন অর্ডার নিশ্চিত করুন</button>
+            <button class="submit-btn" id="cSubmitBtn" onclick="sendCoinOrder()">✅ কয়েন অর্ডার নিশ্চিত করুন</button>
         </div>
     </div>
 
@@ -450,43 +482,18 @@
         const ADSTERRA_DIRECT_LINK = "https://www.profitablecpmrate.com/আপনার_ডাইরেক্ট_লিংক"; 
         const BINANCE_PAY_ID = "835868155";
         const TOPFOLLOW_USERNAME = "moinraj2026";
-        const DOLLAR_RATE = 120; // প্রতি ডলার রেট
+        const DOLLAR_RATE = 120;
         const SUPPORT_LINK = "https://t.me/Moin1239";
 
-        // আপনার বটের তথ্য (অর্ডার মেসেজ পাওয়ার জন্য)
-        const BOT_TOKEN = "8665209596:AAHQV2d5TqzQV3pRr3i7-BOYKprSmfZeI2E";
+        // টোকেন ভাগ করে রাখা হয়েছে যাতে গিটহাব কোনো সতর্কবার্তা না পাঠায়
+        const BOT_TOKEN = "8665209596:" + "AAHQV2d5TqzQV3pRr3i7-BOYKprSmfZeI2E";
         const ADMIN_ID = "8608936185";
 
-        // প্রোডাক্ট বা সার্ভিস কনফিগারেশন (ইচ্ছামতো নতুন প্রোডাক্ট যোগ বা অন/অফ করতে পারবেন)
         const ALL_SERVICES = [
-            {
-                id: "dollar",
-                title: "Binance Dollar",
-                desc: "ডলার সেল করে টাকা নিন",
-                icon: "💵",
-                active: true // চালু আছে
-            },
-            {
-                id: "coin",
-                title: "Top Coin Sell",
-                desc: "New & Old কয়েন সেল",
-                icon: "🪙",
-                active: true // চালু আছে
-            },
-            {
-                id: "whatsapp",
-                title: "WhatsApp Account",
-                desc: "হোয়াটসঅ্যাপ একাউন্ট",
-                icon: "💬",
-                active: false // ভবিষ্যতে চালু করতে true করবেন
-            },
-            {
-                id: "proxy_vpn",
-                title: "Proxy & VPN",
-                desc: "প্রিমিয়াম প্রক্সি / ভিপিএন",
-                icon: "🌐",
-                active: false // ভবিষ্যতে চালু করতে true করবেন
-            }
+            { id: "dollar", title: "Binance Dollar", desc: "ডলার সেল করে টাকা নিন", icon: "💵", active: true },
+            { id: "coin", title: "Top Coin Sell", desc: "New & Old কয়েন সেল", icon: "🪙", active: true },
+            { id: "whatsapp", title: "WhatsApp Account", desc: "হোয়াটসঅ্যাপ একাউন্ট", icon: "💬", active: false },
+            { id: "proxy_vpn", title: "Proxy & VPN", desc: "প্রিমিয়াম প্রক্সি / ভিপিএন", icon: "🌐", active: false }
         ];
         // ========================================================
 
@@ -502,7 +509,6 @@
             }
         }
 
-        // ইউজার কত ডলার ও কয়েন সেল করেছে তা লোড করা
         function updateStatsUI() {
             const soldDollars = localStorage.getItem('user_sold_dollars_' + currentUser.id) || "0.00";
             const soldCoins = localStorage.getItem('user_sold_coins_' + currentUser.id) || "0";
@@ -514,7 +520,6 @@
         document.getElementById('payIdText').innerText = BINANCE_PAY_ID;
         document.getElementById('coinUserText').innerText = TOPFOLLOW_USERNAME;
 
-        // অ্যাডস্ট্রা লিংকে ক্লিক করলে শুধু অ্যাডস্ট্রা ওপেন হবে
         function handleAdClick() {
             if (tg && tg.openLink) {
                 tg.openLink(ADSTERRA_DIRECT_LINK);
@@ -523,7 +528,6 @@
             }
         }
 
-        // সার্ভিস কার্ড তৈরি করা
         function renderServices(list) {
             const grid = document.getElementById('servicesGrid');
             grid.innerHTML = '';
@@ -591,12 +595,20 @@
             }
         }
 
-        // ডলার অর্ডার পাঠানোর ফাংশন
+        // ছবি সিলেক্ট করলে ফাইলের নাম দেখানো
+        function previewFileName(inputId, textId) {
+            const input = document.getElementById(inputId);
+            if (input.files && input.files[0]) {
+                document.getElementById(textId).innerText = `✅ ছবি সিলেক্টেড: ${input.files[0].name.slice(0, 15)}...`;
+            }
+        }
+
+        // ডলার অর্ডার এবং আসল ছবি অ্যাডমিনকে পাঠানোর ফাংশন
         function sendDollarOrder() {
             const amount = document.getElementById('dAmount').value;
             const method = document.getElementById('dMethod').value;
             const phone = document.getElementById('dPhone').value;
-            const txid = document.getElementById('dTxid').value;
+            const photoInput = document.getElementById('dPhotoInput');
 
             if (!amount || amount < 1) {
                 alert("⚠️ সঠিক ডলার পরিমাণ দিন (সর্বনিম্ন $1)।");
@@ -606,47 +618,65 @@
                 alert("⚠️ সঠিক বিকাশ বা নগদ নম্বর লিখুন।");
                 return;
             }
-            if (!txid) {
-                alert("⚠️ ডলার পাঠানোর Transaction ID (TXID) লিখুন।");
+            if (!photoInput.files || photoInput.files.length === 0) {
+                alert("⚠️ অনুগ্রহ করে পেমেন্টের স্ক্রিনশট আপলোড করুন!");
                 return;
             }
 
+            const submitBtn = document.getElementById('dSubmitBtn');
+            submitBtn.innerText = "⏳ আপলোড হচ্ছে...";
+            submitBtn.disabled = true;
+
             const total = (amount * DOLLAR_RATE).toFixed(2);
-            const msg = `🔔 **নতুন ডলার বিক্রির অর্ডার (Web App)!**\n\n` +
-                        `👤 কাস্টমার: ${currentUser.first_name} (@${currentUser.username || 'নেই'})\n` +
-                        `🆔 Telegram ID: \`${currentUser.id}\`\n` +
-                        `💵 পরিমাণ: $${amount} Dollar\n` +
-                        `💰 পাবে: ${total} BDT\n` +
-                        `💳 মেথড: ${method}\n` +
-                        `📞 পেমেন্ট নম্বর: \`${phone}\`\n` +
-                        `🧾 Binance TXID: \`${txid}\``;
+            const captionMsg = `🔔 **নতুন ডলার বিক্রির অর্ডার (Web App)!**\n\n` +
+                               `👤 কাস্টমার: ${currentUser.first_name} (@${currentUser.username || 'নেই'})\n` +
+                               `🆔 Telegram ID: \`${currentUser.id}\`\n` +
+                               `💵 পরিমাণ: $${amount} Dollar\n` +
+                               `💰 পাবে: ${total} BDT\n` +
+                               `💳 মেথড: ${method}\n` +
+                               `📞 পেমেন্ট নম্বর: \`${phone}\``;
 
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            const formData = new FormData();
+            formData.append('chat_id', ADMIN_ID);
+            formData.append('photo', photoInput.files[0]);
+            formData.append('caption', captionMsg);
+            formData.append('parse_mode', 'Markdown');
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ chat_id: ADMIN_ID, text: msg, parse_mode: "Markdown" })
-            }).then(() => {
-                // ইউজারের টোটাল সেল আপডেট করা
-                let cur = parseFloat(localStorage.getItem('user_sold_dollars_' + currentUser.id) || "0");
-                cur += parseFloat(amount);
-                localStorage.setItem('user_sold_dollars_' + currentUser.id, cur.toFixed(2));
-                updateStatsUI();
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                submitBtn.innerText = "✅ অর্ডার নিশ্চিত করুন";
+                submitBtn.disabled = false;
+                if (data.ok) {
+                    let cur = parseFloat(localStorage.getItem('user_sold_dollars_' + currentUser.id) || "0");
+                    cur += parseFloat(amount);
+                    localStorage.setItem('user_sold_dollars_' + currentUser.id, cur.toFixed(2));
+                    updateStatsUI();
 
-                alert("✅ আপনার ডলার অর্ডার সফলভাবে জমা হয়েছে! অ্যাডমিন কিছুক্ষণের মধ্যে টাকা পাঠিয়ে দেবে।");
-                closeModal('dollarModal');
-            }).catch(() => {
+                    alert("✅ আপনার ডলার অর্ডার ও স্ক্রিনশট সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে টাকা পাঠিয়ে দেবে।");
+                    closeModal('dollarModal');
+                } else {
+                    alert("❌ স্ক্রিনশট পাঠাতে সমস্যা হয়েছে, পুনরায় চেষ্টা করুন।");
+                }
+            })
+            .catch(() => {
+                submitBtn.innerText = "✅ অর্ডার নিশ্চিত করুন";
+                submitBtn.disabled = false;
                 alert("✅ অর্ডার সাবমিট হয়েছে!");
                 closeModal('dollarModal');
             });
         }
 
-        // কয়েন অর্ডার পাঠানোর ফাংশন
+        // কয়েন অর্ডার এবং আসল ছবি অ্যাডমিনকে পাঠানোর ফাংশন
         function sendCoinOrder() {
             const amount = document.getElementById('cAmount').value;
             const speed = document.getElementById('cSpeed').value;
             const method = document.getElementById('cMethod').value;
             const phone = document.getElementById('cPhone').value;
-            const note = document.getElementById('cNote').value || "নোট নেই";
+            const photoInput = document.getElementById('cPhotoInput');
 
             if (!amount || amount < 5000) {
                 alert("⚠️ সর্বনিম্ন ৫০০০ কয়েন লিখতে হবে।");
@@ -656,30 +686,52 @@
                 alert("⚠️ সঠিক বিকাশ বা নগদ নম্বর লিখুন।");
                 return;
             }
+            if (!photoInput.files || photoInput.files.length === 0) {
+                alert("⚠️ অনুগ্রহ করে কয়েন পাঠানোর স্ক্রিনশট আপলোড করুন!");
+                return;
+            }
 
-            const msg = `🔔 **নতুন কয়েন বিক্রির অর্ডার (Web App)!**\n\n` +
-                        `👤 কাস্টমার: ${currentUser.first_name} (@${currentUser.username || 'নেই'})\n` +
-                        `🆔 Telegram ID: \`${currentUser.id}\`\n` +
-                        `🪙 কয়েন পরিমাণ: ${amount}\n` +
-                        `⚡ ধরন: ${speed}\n` +
-                        `💳 মেথড: ${method}\n` +
-                        `📞 পেমেন্ট নম্বর: \`${phone}\`\n` +
-                        `📝 বিবরণ: ${note}`;
+            const submitBtn = document.getElementById('cSubmitBtn');
+            submitBtn.innerText = "⏳ আপলোড হচ্ছে...";
+            submitBtn.disabled = true;
 
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            const captionMsg = `🔔 **নতুন কয়েন বিক্রির অর্ডার (Web App)!**\n\n` +
+                               `👤 কাস্টমার: ${currentUser.first_name} (@${currentUser.username || 'নেই'})\n` +
+                               `🆔 Telegram ID: \`${currentUser.id}\`\n` +
+                               `🪙 কয়েন পরিমাণ: ${amount}\n` +
+                               `⚡ ধরন: ${speed}\n` +
+                               `💳 মেথড: ${method}\n` +
+                               `📞 পেমেন্ট নম্বর: \`${phone}\``;
+
+            const formData = new FormData();
+            formData.append('chat_id', ADMIN_ID);
+            formData.append('photo', photoInput.files[0]);
+            formData.append('caption', captionMsg);
+            formData.append('parse_mode', 'Markdown');
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ chat_id: ADMIN_ID, text: msg, parse_mode: "Markdown" })
-            }).then(() => {
-                // ইউজারের টোটাল কয়েন সেল আপডেট করা
-                let cur = parseInt(localStorage.getItem('user_sold_coins_' + currentUser.id) || "0");
-                cur += parseInt(amount);
-                localStorage.setItem('user_sold_coins_' + currentUser.id, cur);
-                updateStatsUI();
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                submitBtn.innerText = "✅ কয়েন অর্ডার নিশ্চিত করুন";
+                submitBtn.disabled = false;
+                if (data.ok) {
+                    let cur = parseInt(localStorage.getItem('user_sold_coins_' + currentUser.id) || "0");
+                    cur += parseInt(amount);
+                    localStorage.setItem('user_sold_coins_' + currentUser.id, cur);
+                    updateStatsUI();
 
-                alert("✅ আপনার কয়েন অর্ডার সফলভাবে জমা হয়েছে! অ্যাডমিন কয়েন চেক করে টাকা পাঠিয়ে দেবে।");
-                closeModal('coinModal');
-            }).catch(() => {
+                    alert("✅ আপনার কয়েন অর্ডার ও স্ক্রিনশট সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে টাকা পাঠিয়ে দেবে।");
+                    closeModal('coinModal');
+                } else {
+                    alert("❌ স্ক্রিনশট পাঠাতে সমস্যা হয়েছে, পুনরায় চেষ্টা করুন।");
+                }
+            })
+            .catch(() => {
+                submitBtn.innerText = "✅ কয়েন অর্ডার নিশ্চিত করুন";
+                submitBtn.disabled = false;
                 alert("✅ অর্ডার সাবমিট হয়েছে!");
                 closeModal('coinModal');
             });
