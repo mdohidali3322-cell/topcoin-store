@@ -73,7 +73,7 @@
             font-weight: 600;
         }
 
-        /* ইউজারের সেল হিস্ট্রি / ব্যালেন্স কার্ড */
+        /* ইউজারের সেল হিস্ট্রি কার্ড */
         .stats-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -214,12 +214,12 @@
             display: block;
         }
         .card-title {
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 800;
             color: #0f172a;
         }
         .card-desc {
-            font-size: 11px;
+            font-size: 10.5px;
             color: var(--text-muted);
             margin-top: 2px;
         }
@@ -234,6 +234,7 @@
         }
         .badge-active { background: #dcfce7; color: #15803d; }
         .badge-yt { background: #ffe4e6; color: #e11d48; }
+        .badge-tg { background: #e0f2fe; color: #0284c7; }
         .badge-soon { background: #f1f5f9; color: #64748b; }
 
         /* ৫. পপ-আপ ফর্ম */
@@ -282,23 +283,41 @@
         .pay-card { background: #fdfaf6; border: 1px dashed var(--primary-orange); padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .submit-btn { width: 100%; background: #0f172a; color: #fff; padding: 14px; border: none; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; }
 
-        .video-wrapper {
+        /* ইউটিউব ভিডিও থাম্বনেইল বক্স */
+        .yt-thumb-box {
             position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
+            width: 100%;
+            height: 190px;
             border-radius: 16px;
+            overflow: hidden;
             margin-bottom: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            cursor: pointer;
+            background: #000;
         }
-        .video-wrapper iframe {
+        .yt-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .yt-play-overlay {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            border: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 58px;
+            height: 40px;
+            background: #ff0000;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(255,0,0,0.5);
         }
 
-        /* ৬. ক্লিন বটম নেভিগেশন বার */
+        /* ৬. বটম নেভিগেশন বার */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -376,7 +395,7 @@
     <div class="section-header">⚡ Select a Service</div>
 
     <div class="services-grid" id="servicesGrid">
-        <!-- জাভাস্ক্রিপ্ট স্বয়ংক্রিয়ভাবে কার্ডগুলো বসাবে -->
+        <!-- জাভাস্ক্রিপ্ট কার্ডগুলো অটোমেটিক বসাবে -->
     </div>
 
     <!-- ৫. ডলার সেল করার ফর্ম -->
@@ -407,7 +426,7 @@
 
             <div class="pay-card">
                 <div>
-                    <div style="font-size: 11px; color: #64748b;">আমাদের Binance Pay ID:</div>
+                    <div style="font-size: 11px; color: #64748b;">আমাদের Binance UID:</div>
                     <div style="font-size: 15px; font-weight: 800;" id="payIdText">835868155</div>
                 </div>
                 <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyPayId()">📋 Copy</button>
@@ -465,7 +484,7 @@
 
             <div class="pay-card">
                 <div>
-                    <div style="font-size: 11px; color: #64748b;">কয়েন পাঠানোর ইউজারনেম:</div>
+                    <div style="font-size: 11px; color: #64748b;">Top Coin পাঠানোর ইউজারনেম:</div>
                     <div style="font-size: 15px; font-weight: 800;" id="coinUserText">top.coin.buyer</div>
                 </div>
                 <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyCoinUser()">📋 Copy</button>
@@ -483,7 +502,7 @@
         </div>
     </div>
 
-    <!-- ৭. Coinsta Coin সেল করার ফর্ম (নতুন যুক্ত করা হয়েছে) -->
+    <!-- ৭. Coinsta Coin সেল করার ফর্ম (আপনার ইমেইল সহ) -->
     <div class="modal" id="coinstaModal">
         <div class="modal-body">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -519,10 +538,10 @@
 
             <div class="pay-card">
                 <div>
-                    <div style="font-size: 11px; color: #64748b;">Coinsta পাঠানোর ইউজারনেম:</div>
-                    <div style="font-size: 15px; font-weight: 800;" id="coinstaUserText">osimali745@gmail.com</div>
+                    <div style="font-size: 11px; color: #64748b;">Coinsta পাঠানোর ইমেইল (Email):</div>
+                    <div style="font-size: 14px; font-weight: 800; word-break: break-all;" id="coinstaEmailText">osimali745@gmail.com</div>
                 </div>
-                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyCoinstaUser()">📋 Copy</button>
+                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyCoinstaEmail()">📋 Copy</button>
             </div>
 
             <div class="form-row">
@@ -537,7 +556,7 @@
         </div>
     </div>
 
-    <!-- ৮. ইউটিউব ভিডিও গ্যালারি পপ-আপ -->
+    <!-- ৮. ইউটিউব ভিডিও গ্যালারি পপ-আপ (আপনার আসল ভিডিও থাম্বনেইল সহ) -->
     <div class="modal" id="ytVideoModal">
         <div class="modal-body">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -551,18 +570,18 @@
                 <span style="font-size: 22px; cursor: pointer;" onclick="closeModal('ytVideoModal')">✕</span>
             </div>
 
-            <!-- ভিডিও থাম্বনেইল (ক্লিক করলেই সরাসরি ভিডিও চালু হবে) -->
+            <!-- আপনার ভিডিওর আসল থাম্বনেইল কার্ড (ট্যাপ করলেই সরাসরি ভিডিও চালু হবে) -->
             <div class="yt-thumb-box" onclick="openYouTubeVideo()">
-                <img id="ytThumbImg" src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" class="yt-thumb">
+                <img id="ytThumbImg" src="https://img.youtube.com/vi/AAnQWFf3PO0/hqdefault.jpg" class="yt-thumb" alt="Video Thumbnail">
                 <div class="yt-play-overlay">▶</div>
             </div>
 
             <div style="font-size: 12px; color: #64748b; line-height: 1.5; margin-bottom: 14px;">
-                💡 আমাদের ইউটিউব চ্যানেলে নিয়মিত ইনকাম ট্রিকস ও পেমেন্ট প্রুফ ভিডিও আপলোড করা হয়।
+                💡 থাম্বনেইলের ওপর ট্যাপ করলেই সরাসরি ভিডিও চালু হবে, অথবা আমাদের অফিশিয়াল চ্যানেলে ভিজিট করুন:
             </div>
 
             <button class="submit-btn" style="background: var(--yt-red);" onclick="openYouTubeChannel()">
-                🔴 সরাসরি YouTube Channel-এ সব ভিডিও দেখুন
+                সরাসরি YouTube Channel-এ যান
             </button>
         </div>
     </div>
@@ -579,64 +598,42 @@
         </div>
     </div>
 
-    /* ইউটিউব থাম্বনেইল ডিজাইন */
-        .yt-thumb-box {
-            position: relative;
-            width: 100%;
-            height: 180px;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            cursor: pointer;
-        }
-        .yt-thumb {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .yt-play-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 55px;
-            height: 40px;
-            background: #ff0000;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 20px;
-            box-shadow: 0 4px 15px rgba(255,0,0,0.5);
-        }
     <script>
         // ========================================================
-        // ------------------ আপনার লিংক ও কনফিগারেশন ---------------
+        // ----------- আপনার দেওয়া আসল তথ্যগুলো সেট করা হলো -----------
         // ========================================================
         const ADSTERRA_DIRECT_LINK = "https://asiafilm.org/4/e506cb68e7bc27e296987be152a29ce0"; 
         const BINANCE_PAY_ID = "835868155";
         const TOPFOLLOW_USERNAME = "top.coin.buyer";
-        const COINSTA_USERNAME = "osimali745@gmail.com"; // আপনার Coinsta ইউজারনেম
+        const COINSTA_EMAIL = "osimali745@gmail.com";
         const DOLLAR_RATE = 120;
         const SUPPORT_LINK = "https://t.me/Moin1239";
+        const TELEGRAM_CHANNEL_LINK = "https://t.me/Moin_Raj13";
 
-        // --- আপনার ইউটিউব চ্যানেল লিংক ও ভিডিও আইডি ---
+        // আপনার ইউটিউব চ্যানেল ও ভিডিও
         const YOUTUBE_CHANNEL_LINK = "https://youtube.com/@moinraj7424?si=TJ2xDDLmlnwvKIGI"; 
-        const YOUTUBE_EMBED_VIDEO_ID = "https://youtube.com/@moinraj7424?si=6Bt1UUnvL9AmE19C"; 
+        const YOUTUBE_VIDEO_URL = "https://youtu.be/AAnQWFf3PO0?si=ryxUg6ShqoYHkI-N"; 
 
         const BOT_TOKEN = "8665209596:" + "AAHQV2d5TqzQV3pRr3i7-BOYKprSmfZeI2E";
         const ADMIN_ID = "8608936185";
 
+        // ইউটিউব ভেক্টর লোগো
         const YT_SVG_ICON = `
-            <svg viewBox="0 0 24 24" width="40" height="40">
+            <svg viewBox="0 0 24 24" width="38" height="38">
                 <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
                 <polygon fill="#FFFFFF" points="9.545,15.568 15.818,12 9.545,8.432"/>
             </svg>
         `;
 
-        // কার্ড লিস্ট (Coinsta সহ)
+        // টেলিগ্রাম ভেক্টর লোগো
+        const TG_SVG_ICON = `
+            <svg viewBox="0 0 24 24" width="38" height="38">
+                <circle cx="12" cy="12" r="12" fill="#2AABEE"/>
+                <path d="M5.3 11.7l11.4-4.7c.5-.2 1.1.2.9.7l-1.9 9.1c-.1.5-.7.8-1.2.5l-3.2-2.4-1.6 1.5c-.2.2-.5.1-.6-.2l-.6-3.8 6.5-5.9c.2-.2 0-.4-.2-.3l-8 5.1-3.6-1.1c-.5-.2-.5-.8.1-1z" fill="#FFF"/>
+            </svg>
+        `;
+
+        // সব সার্ভিস কার্ড
         const ALL_SERVICES = [
             { 
                 id: "dollar", 
@@ -666,6 +663,15 @@
                 active: true 
             },
             { 
+                id: "tg_channel", 
+                title: "Telegram Channel", 
+                desc: "অফিসিয়াল চ্যানেলে জয়েন করুন", 
+                icon: TG_SVG_ICON, 
+                badgeText: "JOIN",
+                badgeClass: "badge-tg",
+                active: true 
+            },
+            { 
                 id: "yt_channel", 
                 title: "YouTube Channel", 
                 desc: "অফিসিয়াল চ্যানেল ভিজিট", 
@@ -677,7 +683,7 @@
             { 
                 id: "yt_videos", 
                 title: "YouTube Videos", 
-                desc: "অ্যাপে সব ভিডিও দেখুন", 
+                desc: "ভিডিও থাম্বনেইল ও প্লেয়ার", 
                 icon: YT_SVG_ICON, 
                 badgeText: "WATCH",
                 badgeClass: "badge-yt",
@@ -726,14 +732,29 @@
 
         document.getElementById('payIdText').innerText = BINANCE_PAY_ID;
         document.getElementById('coinUserText').innerText = TOPFOLLOW_USERNAME;
-        document.getElementById('coinstaUserText').innerText = COINSTA_USERNAME;
-        document.getElementById('ytPlayer').src = `https://www.youtube.com/embed/${YOUTUBE_EMBED_VIDEO_ID}`;
+        document.getElementById('coinstaEmailText').innerText = COINSTA_EMAIL;
 
         function openYouTubeChannel() {
             if (tg && tg.openLink) {
                 tg.openLink(YOUTUBE_CHANNEL_LINK);
             } else {
                 window.open(YOUTUBE_CHANNEL_LINK, '_blank');
+            }
+        }
+
+        function openYouTubeVideo() {
+            if (tg && tg.openLink) {
+                tg.openLink(YOUTUBE_VIDEO_URL);
+            } else {
+                window.open(YOUTUBE_VIDEO_URL, '_blank');
+            }
+        }
+
+        function openTelegramChannel() {
+            if (tg && tg.openTelegramLink) {
+                tg.openTelegramLink(TELEGRAM_CHANNEL_LINK);
+            } else {
+                window.open(TELEGRAM_CHANNEL_LINK, '_blank');
             }
         }
 
@@ -791,6 +812,8 @@
                 openYouTubeChannel();
             } else if (item.id === "yt_videos") {
                 openYouTubeVideosModal();
+            } else if (item.id === "tg_channel") {
+                openTelegramChannel();
             }
         }
 
@@ -800,17 +823,17 @@
 
         function copyPayId() {
             navigator.clipboard.writeText(BINANCE_PAY_ID);
-            alert("✅ Binance Pay ID কপি করা হয়েছে!");
+            alert("✅ Binance UID কপি করা হয়েছে!");
         }
 
         function copyCoinUser() {
             navigator.clipboard.writeText(TOPFOLLOW_USERNAME);
-            alert("✅ TopFollow ইউজারনেম কপি করা হয়েছে!");
+            alert("✅ Top Coin ইউজারনেম কপি করা হয়েছে!");
         }
 
-        function copyCoinstaUser() {
-            navigator.clipboard.writeText(COINSTA_USERNAME);
-            alert("✅ Coinsta ইউজারনেম কপি করা হয়েছে!");
+        function copyCoinstaEmail() {
+            navigator.clipboard.writeText(COINSTA_EMAIL);
+            alert("✅ Coinsta ইমেইল কপি করা হয়েছে!");
         }
 
         function calcDollarTaka() {
@@ -968,7 +991,7 @@
             });
         }
 
-        // Coinsta Coin অর্ডার সাবমিট (নতুন যুক্ত করা হয়েছে)
+        // Coinsta Coin অর্ডার সাবমিট
         function sendCoinstaOrder() {
             const amount = document.getElementById('csAmount').value;
             const speed = document.getElementById('csSpeed').value;
