@@ -551,8 +551,10 @@
                 <span style="font-size: 22px; cursor: pointer;" onclick="closeModal('ytVideoModal')">✕</span>
             </div>
 
-            <div class="video-wrapper">
-                <iframe id="ytPlayer" src="https://youtube.com/@moinraj7424?si=6Bt1UUnvL9AmE19C" allowfullscreen></iframe>
+            <!-- ভিডিও থাম্বনেইল (ক্লিক করলেই সরাসরি ভিডিও চালু হবে) -->
+            <div class="yt-thumb-box" onclick="openYouTubeVideo()">
+                <img id="ytThumbImg" src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" class="yt-thumb">
+                <div class="yt-play-overlay">▶</div>
             </div>
 
             <div style="font-size: 12px; color: #64748b; line-height: 1.5; margin-bottom: 14px;">
@@ -577,6 +579,38 @@
         </div>
     </div>
 
+    /* ইউটিউব থাম্বনেইল ডিজাইন */
+        .yt-thumb-box {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        .yt-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .yt-play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55px;
+            height: 40px;
+            background: #ff0000;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(255,0,0,0.5);
+        }
     <script>
         // ========================================================
         // ------------------ আপনার লিংক ও কনফিগারেশন ---------------
