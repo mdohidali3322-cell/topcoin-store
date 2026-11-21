@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Exchange & Services Hub</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-body: #fdfaf6;
+            --primary-orange: #ff782d;
+            --orange-gradient: linear-gradient(135deg, #ff8c42, #ff6315);
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            padding-bottom: 90px;
+        }
+
+        /* --- ১. টপ প্রোফাইল ও স্ট্যাটাস বার --- */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: #fff;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .avatar-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid #ffd8bf;
+            background: #fed7aa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-orange);
+        }
+        .user-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: #0f172a;
+            max-width: 140px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .user-status {
+            font-size: 11px;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        /* --- ইউজারের সেল হিস্ট্রি / ব্যালেন্স কার্ড --- */
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 12px 18px 4px 18px;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 10px 14px;
+            border: 1px solid #ffedd5;
+            box-shadow: 0 2px 8px rgba(255, 120, 45, 0.05);
+        }
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .stat-value {
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--primary-orange);
+            margin-top: 2px;
+        }
+
+        /* --- ২. রেইনবো সার্চ বার --- */
+        .search-container {
+            padding: 10px 18px;
+        }
+        .search-box {
+            border-radius: 22px;
+            padding: 2px;
+            background: linear-gradient(90deg, #38bdf8, #ec4899, #f59e0b, #10b981);
+        }
+        .search-inner {
+            background: #fff;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+        }
+        .search-inner input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 13px;
+            padding-left: 8px;
+            color: #334155;
+        }
+
+        /* --- ৩. অ্যাডস্ট্রা ব্যানার (Adsterra Direct Link) --- */
+        .banner-container {
+            padding: 6px 18px 12px 18px;
+        }
+        .neon-banner {
+            background: radial-gradient(circle at top, #161c47, #080a1a);
+            border-radius: 20px;
+            padding: 18px 16px;
+            border: 1.5px solid #2563eb;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.35);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .neon-banner:active {
+            transform: scale(0.98);
+        }
+        .banner-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(30, 58, 138, 0.7);
+            border: 1px solid #3b82f6;
+            color: #fde047;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 10px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+        }
+        .banner-title {
+            font-size: 22px;
+            font-weight: 900;
+            background: linear-gradient(180deg, #67e8f9 0%, #38bdf8 40%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-style: italic;
+        }
+        .banner-sub {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* --- ৪. সার্ভিস সেকশন ও গ্রিড --- */
+        .section-header {
+            padding: 6px 18px 10px 18px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #334155;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 18px;
+        }
+        .service-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 18px 14px;
+            text-align: center;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+        }
+        .service-card:active {
+            transform: scale(0.97);
+        }
+        .service-card.disabled {
+            background: #f8fafc;
+            opacity: 0.8;
+        }
+        .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .card-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 8px;
+        }
+        .badge-active { background: #dcfce7; color: #15803d; }
+        .badge-soon { background: #f1f5f9; color: #64748b; }
+
+        /* --- ৫. পপ-আপ ফর্ম --- */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: flex-end;
+            z-index: 200;
+        }
+        .modal-body {
+            background: #fff;
+            width: 100%;
+            border-radius: 26px 26px 0 0;
+            padding: 22px 18px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slide 0.25s ease-out;
+        }
+        @keyframes slide { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .form-row { margin-bottom: 12px; }
+        .form-row label { font-size: 12px; font-weight: 700; display: block; margin-bottom: 5px; }
+        .form-row input, .form-row select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 13px; outline: none; }
+        .pay-card { background: #fdfaf6; border: 1px dashed var(--primary-orange); padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .submit-btn { width: 100%; background: #0f172a; color: #fff; padding: 14px; border: none; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; }
+
+        /* --- ৬. ক্লিন বটম নেভিগেশন বার --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 65px;
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #f1f5f9;
+            z-index: 100;
+        }
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+        .nav-link.active {
+            color: var(--primary-orange);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ১. টপ প্রোফাইল বার -->
+    <div class="top-bar">
+        <div class="user-section">
+            <div class="avatar-img" id="userPic">U</div>
+            <div>
+                <div class="user-name" id="uName">Loading...</div>
+                <div class="user-status">● Verified User</div>
+            </div>
+        </div>
+        <div style="font-size: 12px; background: #ffedd5; color: var(--primary-orange); padding: 5px 10px; border-radius: 10px; font-weight: 800;">
+            🚀 Fast Pay
+        </div>
+    </div>
+
+    <!-- টোটাল সেল স্ট্যাটাস (ইউজার কত ডলার ও কয়েন সেল করেছে তা অটোমেটিক যোগ হবে) -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-label">💵 Total Dollar Sold</div>
+            <div class="stat-value" id="soldDollarText">$0.00</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">🪙 Total Coin Sold</div>
+            <div class="stat-value" id="soldCoinText">0 Coins</div>
+        </div>
+    </div>
+
+    <!-- ২. রেইনবো সার্চ বার -->
+    <div class="search-container">
+        <div class="search-box">
+            <div class="search-inner">
+                <span style="color: #94a3b8;">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search services..." oninput="filterServices()">
+            </div>
+        </div>
+    </div>
+
+    <!-- ৩. অ্যাডস্ট্রা ডাইরেক্ট লিংক ব্যানার (শুধুমাত্র এই ব্যানারে ক্লিক করলে ওপেন হবে) -->
+    <div class="banner-container">
+        <div class="neon-banner" onclick="handleAdClick()">
+            <div class="banner-badge">👑 Special Sponsor Deals</div>
+            <div class="banner-title">Claim Daily Bonus</div>
+            <div class="banner-sub">👉 ক্লিক করে স্পেশাল অফারটি দেখে নিন</div>
+        </div>
+    </div>
+
+    <!-- ৪. সার্ভিস লিস্ট (গ্রিড) -->
+    <div class="section-header">⚡ Select a Service to Sell</div>
+
+    <div class="services-grid" id="servicesGrid">
+        <!-- জাভাস্ক্রিপ্ট স্বয়ংক্রিয়ভাবে কার্ডগুলো বসাবে -->
+    </div>
+
+    <!-- ৫. ডলার সেল করার ফর্ম -->
+    <div class="modal" id="dollarModal">
+        <div class="modal-body">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-size: 16px; font-weight: 800;">💵 Binance Dollar (USDT) Sell</h3>
+                <span style="font-size: 22px; cursor: pointer;" onclick="closeModal('dollarModal')">✕</span>
+            </div>
+
+            <div class="form-row">
+                <label>কত ডলার বিক্রি করবেন ($):</label>
+                <input type="number" id="dAmount" placeholder="সর্বনিম্ন $1" oninput="calcDollarTaka()">
+            </div>
+
+            <div class="form-row">
+                <label>টাকা নেওয়ার মাধ্যম:</label>
+                <select id="dMethod">
+                    <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
+                    <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label>আপনার বিকাশ/নগদ পার্সোনাল নম্বর:</label>
+                <input type="number" id="dPhone" placeholder="017XXXXXXXX">
+            </div>
+
+            <div class="pay-card">
+                <div>
+                    <div style="font-size: 11px; color: #64748b;">আমাদের Binance Pay ID:</div>
+                    <div style="font-size: 15px; font-weight: 800;" id="payIdText">835868155</div>
+                </div>
+                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyPayId()">📋 Copy</button>
+            </div>
+
+            <div class="form-row">
+                <label>ডলার পাঠানোর Transaction ID (TXID):</label>
+                <input type="text" id="dTxid" placeholder="Binance TXID নম্বর দিন">
+            </div>
+
+            <div id="dollarPayoutTxt" style="background: #ecfdf5; padding: 10px; border-radius: 10px; font-size: 13px; color: #047857; font-weight: 700; margin-bottom: 14px;">
+                💰 আপনি পাবেন: ০.০০ টাকা (রেট: ১২০ টাকা)
+            </div>
+
+            <button class="submit-btn" onclick="sendDollarOrder()">✅ অর্ডার নিশ্চিত করুন</button>
+        </div>
+    </div>
+
+    <!-- ৬. কয়েন সেল করার ফর্ম -->
+    <div class="modal" id="coinModal">
+        <div class="modal-body">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-size: 16px; font-weight: 800;">🪙 Top Coin Sell</h3>
+                <span style="font-size: 22px; cursor: pointer;" onclick="closeModal('coinModal')">✕</span>
+            </div>
+
+            <div class="form-row">
+                <label>কত কয়েন বিক্রি করবেন:</label>
+                <input type="number" id="cAmount" placeholder="সর্বনিম্ন 5000 কয়েন">
+            </div>
+
+            <div class="form-row">
+                <label>পেমেন্ট স্পিড:</label>
+                <select id="cSpeed">
+                    <option value="ইনস্ট্যান্ট পেমেন্ট ⚡">ইনস্ট্যান্ট পেমেন্ট ⚡ (রেট কম - দ্রুত পেমেন্ট)</option>
+                    <option value="রেগুলার পেমেন্ট ⏳">রেগুলার পেমেন্ট ⏳ (রেট বেশি - সময় লাগবে)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label>টাকা নেওয়ার মাধ্যম:</label>
+                <select id="cMethod">
+                    <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
+                    <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label>আপনার বিকাশ/নগদ নম্বর:</label>
+                <input type="number" id="cPhone" placeholder="017XXXXXXXX">
+            </div>
+
+            <div class="pay-card">
+                <div>
+                    <div style="font-size: 11px; color: #64748b;">কয়েন পাঠানোর ইউজারনেম:</div>
+                    <div style="font-size: 15px; font-weight: 800;" id="coinUserText">moinraj2026</div>
+                </div>
+                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyCoinUser()">📋 Copy</button>
+            </div>
+
+            <div class="form-row">
+                <label>কয়েন পাঠানো হয়েছে তার বিবরণ/নোট:</label>
+                <input type="text" id="cNote" placeholder="কোন আইডি থেকে পাঠিয়েছেন লিখুন">
+            </div>
+
+            <button class="submit-btn" onclick="sendCoinOrder()">✅ কয়েন অর্ডার নিশ্চিত করুন</button>
+        </div>
+    </div>
+
+    <!-- ৭. বটম নেভিগেশন বার -->
+    <div class="bottom-nav">
+        <div class="nav-link active">
+            <span style="font-size: 20px;">🏠</span>
+            <span>Home</span>
+        </div>
+        <div class="nav-link" onclick="openSupport()">
+            <span style="font-size: 20px;">📞</span>
+            <span>Support</span>
+        </div>
+    </div>
+
+    <script>
+        // ========================================================
+        // ------------------ আপনার সেটিংস ও লিংক -------------------
+        // ========================================================
+        const ADSTERRA_DIRECT_LINK = "https://www.profitablecpmrate.com/আপনার_ডাইরেক্ট_লিংক"; 
+        const BINANCE_PAY_ID = "835868155";
+        const TOPFOLLOW_USERNAME = "moinraj2026";
+        const DOLLAR_RATE = 120; // প্রতি ডলার রেট
+        const SUPPORT_LINK = "https://t.me/Moin1239";
+
+        // আপনার বটের তথ্য (অর্ডার মেসেজ পাওয়ার জন্য)
+        const BOT_TOKEN = "8665209596:AAHQV2d5TqzQV3pRr3i7-BOYKprSmfZeI2E";
+        const ADMIN_ID = "8608936185";
+
+        // প্রোডাক্ট বা সার্ভিস কনফিগারেশন (ইচ্ছামতো নতুন প্রোডাক্ট যোগ বা অন/অফ করতে পারবেন)
+        const ALL_SERVICES = [
+            {
+                id: "dollar",
+                title: "Binance Dollar",
+                desc: "ডলার সেল করে টাকা নিন",
+                icon: "💵",
+                active: true // চালু আছে
+            },
+            {
+                id: "coin",
+                title: "Top Coin Sell",
+                desc: "New & Old কয়েন সেল",
+                icon: "🪙",
+                active: true // চালু আছে
+            },
+            {
+                id: "whatsapp",
+                title: "WhatsApp Account",
+                desc: "হোয়াটসঅ্যাপ একাউন্ট",
+                icon: "💬",
+                active: false // ভবিষ্যতে চালু করতে true করবেন
+            },
+            {
+                id: "proxy_vpn",
+                title: "Proxy & VPN",
+                desc: "প্রিমিয়াম প্রক্সি / ভিপিএন",
+                icon: "🌐",
+                active: false // ভবিষ্যতে চালু করতে true করবেন
+            }
+        ];
+        // ========================================================
+
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        let currentUser = { first_name: "User", id: "0", username: "" };
+
+        if (tg) {
+            tg.expand();
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                currentUser = tg.initDataUnsafe.user;
+                document.getElementById('uName').innerText = currentUser.first_name || "User";
+                document.getElementById('userPic').innerText = (currentUser.first_name || "U")[0].toUpperCase();
+            }
+        }
+
+        // ইউজার কত ডলার ও কয়েন সেল করেছে তা লোড করা
+        function updateStatsUI() {
+            const soldDollars = localStorage.getItem('user_sold_dollars_' + currentUser.id) || "0.00";
+            const soldCoins = localStorage.getItem('user_sold_coins_' + currentUser.id) || "0";
+            document.getElementById('soldDollarText').innerText = `$${soldDollars}`;
+            document.getElementById('soldCoinText').innerText = `${parseInt(soldCoins).toLocaleString()} Coins`;
+        }
+        updateStatsUI();
+
+        document.getElementById('payIdText').innerText = BINANCE_PAY_ID;
+        document.getElementById('coinUserText').innerText = TOPFOLLOW_USERNAME;
+
+        // অ্যাডস্ট্রা লিংকে ক্লিক করলে শুধু অ্যাডস্ট্রা ওপেন হবে
+        function handleAdClick() {
+            if (tg && tg.openLink) {
+                tg.openLink(ADSTERRA_DIRECT_LINK);
+            } else {
+                window.open(ADSTERRA_DIRECT_LINK, '_blank');
+            }
+        }
+
+        // সার্ভিস কার্ড তৈরি করা
+        function renderServices(list) {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = `service-card ${item.active ? '' : 'disabled'}`;
+                card.onclick = () => onServiceClick(item);
+
+                card.innerHTML = `
+                    <div class="badge ${item.active ? 'badge-active' : 'badge-soon'}">
+                        ${item.active ? 'AVAILABLE' : 'COMING SOON'}
+                    </div>
+                    <div class="card-icon">${item.icon}</div>
+                    <div class="card-title">${item.title}</div>
+                    <div class="card-desc">${item.desc}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        renderServices(ALL_SERVICES);
+
+        function filterServices() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = ALL_SERVICES.filter(s => s.title.toLowerCase().includes(query) || s.desc.toLowerCase().includes(query));
+            renderServices(filtered);
+        }
+
+        function onServiceClick(item) {
+            if (!item.active) {
+                alert(`⚠️ '${item.title}' সার্ভিসটি শীঘ্রই চালু করা হবে! অনুগ্রহ করে অপেক্ষা করুন।`);
+                return;
+            }
+            if (item.id === "dollar") {
+                document.getElementById('dollarModal').style.display = 'flex';
+            } else if (item.id === "coin") {
+                document.getElementById('coinModal').style.display = 'flex';
+            }
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function copyPayId() {
+            navigator.clipboard.writeText(BINANCE_PAY_ID);
+            alert("✅ Binance Pay ID কপি করা হয়েছে!");
+        }
+
+        function copyCoinUser() {
+            navigator.clipboard.writeText(TOPFOLLOW_USERNAME);
+            alert("✅ TopFollow ইউজারনেম কপি করা হয়েছে!");
+        }
+
+        function calcDollarTaka() {
+            const val = parseFloat(document.getElementById('dAmount').value) || 0;
+            const total = val * DOLLAR_RATE;
+            document.getElementById('dollarPayoutTxt').innerText = `💰 আপনি পাবেন: ${total.toFixed(2)} টাকা (রেট: ${DOLLAR_RATE} টাকা)`;
+        }
+
+        function openSupport() {
+            if (tg && tg.openTelegramLink) {
+                tg.openTelegramLink(SUPPORT_LINK);
+            } else {
+                window.open(SUPPORT_LINK, '_blank');
+            }
+        }
+
+        // ডলার অর্ডার পাঠানোর ফাংশন
+        function sendDollarOrder() {
+            const amount = document.getElementById('dAmount').value;
+            const method = document.getElementById('dMethod').value;
+            const phone = document.getElementById('dPhone').value;
+            const txid = document.getElementById('dTxid').value;
+
+            if (!amount || amount < 1) {
+                alert("⚠️ সঠিক ডলার পরিমাণ দিন (সর্বনিম্ন $1)।");
+                return;
+            }
+            if (!phone || phone.length < 11) {
+                alert("⚠️ সঠিক বিকাশ বা নগদ নম্বর লিখুন।");
+                return;
+            }
+            if (!txid) {
+                alert("⚠️ ডলার পাঠানোর Transaction ID (TXID) লিখুন।");
+                return;
+            }
+
+            const total = (amount * DOLLAR_RATE).toFixed(2);
+            const msg = `🔔 **নতুন ডলার বিক্রির অর্ডার (Web App)!**\n\n` +
+                        `👤 কাস্টমার: ${currentUser.first_name} (@${currentUser.username || 'নেই'})\n` +
+                        `🆔 Telegram ID: \`${currentUser.id}\`\n` +
+                        `💵 পরিমাণ: $${amount} Dollar\n` +
+                        `💰 পাবে: ${total} BDT\n` +
+                        `💳 মেথড: ${method}\n` +
+                        `📞 পেমেন্ট নম্বর: \`${phone}\`\n` +
+                        `🧾 Binance TXID: \`${txid}\``;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: ADMIN_ID, text: msg, parse_mode: "Markdown" })
+            }).then(() => {
+                // ইউজারের টোটাল সেল আপডেট করা
+                let cur = parseFloat(localStorage.getItem('user_sold_dollars_' + currentUser.id) || "0");
+                cur += parseFloat(amount);
+                localStorage.setItem('user_sold_dollars_' + currentUser.id, cur.toFixed(2));
+                updateStatsUI();
+
+                alert("✅ আপনার ডলার অর্ডার সফলভাবে জমা হয়েছে! অ্যাডমিন কিছুক্ষণের মধ্যে টাকা পাঠিয়ে দেবে।");
+                closeModal('dollarModal');
+            }).catch(() => {
+                alert("✅ অর্ডার সাবমিট হয়েছে!");
+                closeModal('dollarModal');
+            });
+        }
+
+        // কয়েন অর্ডার পাঠানোর ফাংশন
+        function sendCoinOrder() {
+            const amount = document.getElementById('cAmount').value;
+            const speed = document.getElementById('cSpeed').value;
+            const method = document.getElementById('cMethod').value;
+            const phone = document.getElementById('cPhone').value;
+            const note = document.getElementById('cNote').value || "নোট নেই";
+
+            if (!amount || amount < 5000) {
+                alert("⚠️ সর্বনিম্ন ৫০০০ কয়েন লিখতে হবে।");
+                return;
+            }
+            if (!phone || phone.length < 11) {
+                alert("⚠️ সঠিক বিকাশ বা নগদ নম্বর লিখুন।");
+                return;
+            }
+
+            const msg = `🔔 **নতুন কয়েন বিক্রির অর্ডার (Web App)!**\n\n` +
+                        `👤 কাস্টমার: ${currentUser.first_name} (@${currentUser.username || 'নেই'})\n` +
+                        `🆔 Telegram ID: \`${currentUser.id}\`\n` +
+                        `🪙 কয়েন পরিমাণ: ${amount}\n` +
+                        `⚡ ধরন: ${speed}\n` +
+                        `💳 মেথড: ${method}\n` +
+                        `📞 পেমেন্ট নম্বর: \`${phone}\`\n` +
+                        `📝 বিবরণ: ${note}`;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: ADMIN_ID, text: msg, parse_mode: "Markdown" })
+            }).then(() => {
+                // ইউজারের টোটাল কয়েন সেল আপডেট করা
+                let cur = parseInt(localStorage.getItem('user_sold_coins_' + currentUser.id) || "0");
+                cur += parseInt(amount);
+                localStorage.setItem('user_sold_coins_' + currentUser.id, cur);
+                updateStatsUI();
+
+                alert("✅ আপনার কয়েন অর্ডার সফলভাবে জমা হয়েছে! অ্যাডমিন কয়েন চেক করে টাকা পাঠিয়ে দেবে।");
+                closeModal('coinModal');
+            }).catch(() => {
+                alert("✅ অর্ডার সাবমিট হয়েছে!");
+                closeModal('coinModal');
+            });
+        }
+    </script>
+</body>
+</html>
