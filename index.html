@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Exchange & Services Hub</title>
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- OTPAuth Library for 2FA Generation -->
+    <script src="https://cdn.jsdelivr.net/npm/otpauth@9.3.1/dist/otpauth.umd.min.js"></script>
+    
     <style>
         :root {
             --bg-body: #fdfaf6;
@@ -235,6 +238,8 @@
         .badge-active { background: #dcfce7; color: #15803d; }
         .badge-yt { background: #ffe4e6; color: #e11d48; }
         .badge-tg { background: #e0f2fe; color: #0284c7; }
+        .badge-sup { background: #dbeafe; color: #1d4ed8; }
+        .badge-2fa { background: #fef08a; color: #854d0e; }
         .badge-soon { background: #f1f5f9; color: #64748b; }
 
         /* ৫. পপ-আপ ফর্ম */
@@ -283,7 +288,6 @@
         .pay-card { background: #fdfaf6; border: 1px dashed var(--primary-orange); padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .submit-btn { width: 100%; background: #0f172a; color: #fff; padding: 14px; border: none; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; }
 
-        /* ইউটিউব ভিডিও থাম্বনেইল বক্স */
         .yt-thumb-box {
             position: relative;
             width: 100%;
@@ -295,18 +299,12 @@
             cursor: pointer;
             background: #000;
         }
-        .yt-thumb {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .yt-thumb { width: 100%; height: 100%; object-fit: cover; }
         .yt-play-overlay {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 58px;
-            height: 40px;
+            width: 58px; height: 40px;
             background: #ff0000;
             border-radius: 10px;
             display: flex;
@@ -315,6 +313,237 @@
             color: #fff;
             font-size: 20px;
             box-shadow: 0 4px 15px rgba(255,0,0,0.5);
+        }
+
+        /* 2FA স্টাইল ও এনিমেশন */
+        .two-factor-app-wrapper {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .two-factor-app-wrapper .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 20px 16px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .two-factor-app-wrapper .main-title {
+            font-size: 19px !important;
+            font-weight: 900;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.3;
+            text-align: center !important;
+            display: block !important;
+            width: 100% !important;
+            background: linear-gradient(90deg, #ff3366, #ff7b00, #ffeb3b, #00e676, #00b0ff, #651fff, #f50057, #ff3366);
+            background-size: 800% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-flow 12s linear infinite;
+        }
+        .two-factor-app-wrapper .input-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+        .two-factor-app-wrapper .input-label {
+            display: block;
+            font-size: 13px;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .two-factor-app-wrapper .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        .two-factor-app-wrapper .input-field {
+            width: 100%;
+            padding: 12px 85px 12px 14px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            color: #1a202c;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .two-factor-app-wrapper .input-field:focus {
+            border-color: #ff3366;
+            box-shadow: 0 0 8px rgba(255, 51, 102, 0.2);
+        }
+        .two-factor-app-wrapper .paste-btn {
+            position: absolute;
+            right: 6px;
+            border: none !important;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #ffffff !important;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 51, 102, 0.3);
+            background: linear-gradient(90deg, #ff3366, #ff7b00, #ffeb3b, #00e676, #00b0ff, #651fff, #f50057, #ff3366);
+            background-size: 800% 100%;
+            animation: rainbow-flow 12s linear infinite;
+        }
+        .two-factor-app-wrapper .paste-btn:active { transform: scale(0.95); }
+
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            margin: 20px 0 10px 0;
+        }
+        .float-wrap-download {
+            animation: bounce-effect 3s ease-in-out infinite;
+            animation-delay: 1.5s;
+            width: 100%;
+        }
+        .premium-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px 24px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            border: none !important;
+            outline: none !important;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            width: 100%;
+            background: linear-gradient(90deg, #ff3366, #ff7b00, #ffeb3b, #00e676, #00b0ff, #651fff, #f50057, #ff3366);
+            background-size: 800% 100%;
+            animation: rainbow-flow 12s linear infinite;
+        }
+        .premium-btn svg { width: 22px; height: 22px; fill: #ffffff; }
+
+        .two-factor-app-wrapper .output-container {
+            display: none;
+            margin-top: 20px;
+            background: #f8fafc;
+            padding: 18px 14px;
+            border-radius: 16px;
+            border: 2px dashed #cbd5e1;
+            text-align: center;
+        }
+        .two-factor-app-wrapper .output-label {
+            margin-bottom: 5px;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .two-factor-app-wrapper .code-box {
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            padding: 10px 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 6px 0;
+            line-height: 1;
+            background: linear-gradient(90deg, #ff3366, #ff7b00, #ffeb3b, #00e676, #00b0ff, #651fff, #f50057, #ff3366);
+            background-size: 800% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-flow 12s linear infinite, bounce-effect 3s ease-in-out infinite;
+        }
+        .two-factor-app-wrapper .copy-hint {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .two-factor-app-wrapper .cooldown-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin-top: 14px;
+            overflow: hidden;
+        }
+        .two-factor-app-wrapper .cooldown-progress {
+            height: 100%;
+            width: 100%;
+            background: #10b981;
+            transition: width 1s linear;
+        }
+        .two-factor-app-wrapper .timer-text-wrap {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 8px;
+            font-weight: 700;
+        }
+        .two-factor-app-wrapper .timer-text-wrap span { color: #ff3366; }
+
+        @keyframes rainbow-flow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 800% 0%; }
+        }
+        @keyframes bounce-effect {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .custom-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .custom-modal {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px 20px;
+            width: calc(100% - 40px);
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid #cbd5e1;
+        }
+        .custom-modal h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff3366, #ff7b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .custom-modal p { font-size: 13px; color: #475569; margin-bottom: 18px; line-height: 1.4; }
+        .custom-modal button {
+            background: linear-gradient(90deg, #ff3366, #ff7b00);
+            color: #fff;
+            border: none;
+            padding: 9px 28px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
         }
 
         /* ৬. বটম নেভিগেশন বার */
@@ -355,8 +584,8 @@
                 <div class="user-status">● Verified User</div>
             </div>
         </div>
-        <div style="font-size: 12px; background: #ffedd5; color: var(--primary-orange); padding: 5px 10px; border-radius: 10px; font-weight: 800;">
-            🚀 Fast Pay
+        <div style="font-size: 12px; background: #ffedd5; color: var(--primary-orange); padding: 5px 10px; border-radius: 10px; font-weight: 800; cursor: pointer;" onclick="openSupport()">
+            💬 Support @Moin1239
         </div>
     </div>
 
@@ -387,7 +616,7 @@
         <div class="neon-banner" onclick="handleAdClick()">
             <div class="banner-badge">👑 Special Sponsor Deals</div>
             <div class="banner-title">Claim Daily Bonus</div>
-            <div class="banner-sub">👉 ক্লিক করে স্পেশাল অফারটি দেখে নিন</div>
+            <div class="banner-sub">👉 Click here to check special offer</div>
         </div>
     </div>
 
@@ -502,7 +731,7 @@
         </div>
     </div>
 
-    <!-- ৭. Coinsta Coin সেল করার ফর্ম (আপনার ইমেইল সহ) -->
+    <!-- ৭. Coinsta Coin সেল করার ফর্ম -->
     <div class="modal" id="coinstaModal">
         <div class="modal-body">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -556,7 +785,63 @@
         </div>
     </div>
 
-    <!-- ৮. ইউটিউব ভিডিও গ্যালারি পপ-আপ (আপনার আসল ভিডিও থাম্বনেইল সহ) -->
+    <!-- ৮. 2FA AUTHENTICATOR মোডাল (১০০% ক্লিন ও প্রফেশনাল ইংরেজি) -->
+    <div class="modal" id="tfaModal">
+        <div class="modal-body" style="padding: 10px;">
+            <div style="display: flex; justify-content: flex-end; padding: 6px 10px 0 0;">
+                <span style="font-size: 24px; cursor: pointer; color: #64748b;" onclick="closeModal('tfaModal')">✕</span>
+            </div>
+
+            <div class="two-factor-app-wrapper">
+                <div class="card">
+                    <h1 class="main-title">2FA Authentication Code</h1>
+
+                    <div class="input-group">
+                        <label class="input-label" for="secretKey">Enter 2FA Secret Key:</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="secretKey" class="input-field" placeholder="Paste your 2FA Secret Key here..." autocomplete="off">
+                            <button type="button" class="paste-btn" onclick="pasteFromClipboard()">Paste</button>
+                        </div>
+                    </div>
+
+                    <div class="btn-container">
+                        <div class="float-wrap-download">
+                            <button id="generateBtn" class="premium-btn btn-download" onclick="generateCode()">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                                </svg>
+                                2FA Code
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="output-container" id="outputContainer">
+                        <p class="output-label">Your 2FA Code:</p>
+                        <div class="code-box" id="codeBox" onclick="copyToClipboard()">------</div>
+                        <p class="copy-hint" id="copyHint">Tap code to copy</p>
+
+                        <div class="cooldown-bar">
+                            <div class="cooldown-progress" id="cooldownProgress"></div>
+                        </div>
+
+                        <div class="timer-text-wrap">
+                            Code expires in <span id="timerText">30</span> seconds
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="customAlert" class="custom-modal-overlay">
+                <div class="custom-modal">
+                    <h3 class="modal-title">Security Alert</h3>
+                    <p id="customAlertMessage" class="modal-message"></p>
+                    <button onclick="closeCustomAlert()" class="modal-btn">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ৯. ইউটিউব ভিডিও গ্যালারি পপ-আপ -->
     <div class="modal" id="ytVideoModal">
         <div class="modal-body">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -565,36 +850,35 @@
                         <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
                         <polygon fill="#FFFFFF" points="9.545,15.568 15.818,12 9.545,8.432"/>
                     </svg>
-                    আমাদের ইউটিউব ভিডিও
+                    Official YouTube Video
                 </h3>
                 <span style="font-size: 22px; cursor: pointer;" onclick="closeModal('ytVideoModal')">✕</span>
             </div>
 
-            <!-- আপনার ভিডিওর আসল থাম্বনেইল কার্ড (ট্যাপ করলেই সরাসরি ভিডিও চালু হবে) -->
             <div class="yt-thumb-box" onclick="openYouTubeVideo()">
                 <img id="ytThumbImg" src="https://img.youtube.com/vi/AAnQWFf3PO0/hqdefault.jpg" class="yt-thumb" alt="Video Thumbnail">
                 <div class="yt-play-overlay">▶</div>
             </div>
 
             <div style="font-size: 12px; color: #64748b; line-height: 1.5; margin-bottom: 14px;">
-                💡 থাম্বনেইলের ওপর ট্যাপ করলেই সরাসরি ভিডিও চালু হবে, অথবা আমাদের অফিশিয়াল চ্যানেলে ভিজিট করুন:
+                💡 Tap on the video to play, or visit our official YouTube Channel:
             </div>
 
             <button class="submit-btn" style="background: var(--yt-red);" onclick="openYouTubeChannel()">
-                সরাসরি YouTube Channel-এ যান
+                Visit YouTube Channel
             </button>
         </div>
     </div>
 
-    <!-- ৯. বটম নেভিগেশন বার -->
+    <!-- ১০. বটম নেভিগেশন বার -->
     <div class="bottom-nav">
         <div class="nav-link active">
             <span style="font-size: 20px;">🏠</span>
             <span>Home</span>
         </div>
         <div class="nav-link" onclick="openSupport()">
-            <span style="font-size: 20px;">📞</span>
-            <span>Support</span>
+            <span style="font-size: 20px;">💬</span>
+            <span>Support (@Moin1239)</span>
         </div>
     </div>
 
@@ -607,17 +891,15 @@
         const TOPFOLLOW_USERNAME = "top.coin.buyer";
         const COINSTA_EMAIL = "osimali745@gmail.com";
         const DOLLAR_RATE = 120;
-        const SUPPORT_LINK = "https://t.me/Moin1239";
+        const SUPPORT_LINK = "https://t.me/Moin1239"; // আপনার পার্সোনাল আইডি লিংক
         const TELEGRAM_CHANNEL_LINK = "https://t.me/Moin_Raj13";
 
-        // আপনার ইউটিউব চ্যানেল ও ভিডিও
         const YOUTUBE_CHANNEL_LINK = "https://youtube.com/@moinraj7424?si=TJ2xDDLmlnwvKIGI"; 
         const YOUTUBE_VIDEO_URL = "https://youtu.be/AAnQWFf3PO0?si=ryxUg6ShqoYHkI-N"; 
 
         const BOT_TOKEN = "8665209596:" + "AAHQV2d5TqzQV3pRr3i7-BOYKprSmfZeI2E";
         const ADMIN_ID = "8608936185";
 
-        // ইউটিউব ভেক্টর লোগো
         const YT_SVG_ICON = `
             <svg viewBox="0 0 24 24" width="38" height="38">
                 <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
@@ -625,20 +907,42 @@
             </svg>
         `;
 
-        // টেলিগ্রাম ভেক্টর লোগো
-        const TG_SVG_ICON = `
-            <svg viewBox="0 0 24 24" width="38" height="38">
-                <circle cx="12" cy="12" r="12" fill="#2AABEE"/>
-                <path d="M5.3 11.7l11.4-4.7c.5-.2 1.1.2.9.7l-1.9 9.1c-.1.5-.7.8-1.2.5l-3.2-2.4-1.6 1.5c-.2.2-.5.1-.6-.2l-.6-3.8 6.5-5.9c.2-.2 0-.4-.2-.3l-8 5.1-3.6-1.1c-.5-.2-.5-.8.1-1z" fill="#FFF"/>
+        // টেলিগ্রামের অফিশিয়াল আসল ২৪০x২৪০ পেপার-প্লেন এইচডি লোগো
+        const TG_OFFICIAL_SVG_ICON = `
+            <svg viewBox="0 0 240 240" width="38" height="38">
+                <circle cx="120" cy="120" r="120" fill="#24A1DE"/>
+                <path d="M54 116.5l112.5-44.5c5.2-2.1 9.8 1.1 8.1 8.8l-19.1 90.1c-1.4 6.4-5.3 8-10.6 5l-29.3-21.6-14.1 13.6c-1.6 1.6-2.9 2.9-5.9 2.9l2.1-29.8 54.2-49c2.4-2.1-.5-3.3-3.7-1.2L81.2 133.4 52.3 124.3c-6.3-2-6.4-6.3 1.7-7.8z" fill="#FFF"/>
             </svg>
         `;
 
-        // সব সার্ভিস কার্ড
+        const TFA_SVG_ICON = `
+            <svg viewBox="0 0 24 24" width="38" height="38">
+                <circle cx="12" cy="12" r="12" fill="#facc15"/>
+                <path d="M12 5a3 3 0 00-3 3v2H8a1 1 0 00-1 1v7a1 1 0 001 1h8a1 1 0 001-1v-7a1 1 0 00-1-1h-1V8a3 3 0 00-3-3zm1 5h-2V8a1 1 0 012 0v2z" fill="#713f12"/>
+            </svg>
+        `;
+
+        // মেসেঞ্জারের মতো প্রফেশনাল ব্লু চ্যাট আইকন
+        const MSG_SUPPORT_ICON = `
+            <svg viewBox="0 0 24 24" width="38" height="38">
+                <defs>
+                    <linearGradient id="msgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#00C6FF"/>
+                        <stop offset="100%" stop-color="#0072FF"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="12" cy="12" r="12" fill="url(#msgGrad)"/>
+                <path d="M6.5 11.5c0-3.3 2.46-6 5.5-6s5.5 2.7 5.5 6c0 3.3-2.46 6-5.5 6-.66 0-1.28-.13-1.85-.35L7.5 18l.77-2.1c-.98-.95-1.77-2.48-1.77-4.4z" fill="#FFFFFF"/>
+                <path d="M9.5 11.8h5M9.5 9.5h3" stroke="#0072FF" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+        `;
+
+        // কার্ড লিস্ট
         const ALL_SERVICES = [
             { 
                 id: "dollar", 
                 title: "Binance Dollar", 
-                desc: "ডলার সেল করে টাকা নিন", 
+                desc: "Sell Dollar to BDT", 
                 icon: "💵", 
                 badgeText: "AVAILABLE",
                 badgeClass: "badge-active",
@@ -647,7 +951,7 @@
             { 
                 id: "coin", 
                 title: "Top Coin Sell", 
-                desc: "New & Old কয়েন সেল", 
+                desc: "New & Old Coin Sell", 
                 icon: "🪙", 
                 badgeText: "AVAILABLE",
                 badgeClass: "badge-active",
@@ -656,17 +960,35 @@
             { 
                 id: "coinsta", 
                 title: "Coinsta Coin Sell", 
-                desc: "Coinsta কয়েন সেল করুন", 
+                desc: "Sell Coinsta Coins", 
                 icon: "⭐", 
                 badgeText: "AVAILABLE",
                 badgeClass: "badge-active",
                 active: true 
             },
             { 
+                id: "tfa_tool", 
+                title: "2FA Authenticator", 
+                desc: "Insta/FB 2FA Code", 
+                icon: TFA_SVG_ICON, 
+                badgeText: "ACTIVE",
+                badgeClass: "badge-2fa",
+                active: true 
+            },
+            { 
+                id: "support_card", 
+                title: "Support @Moin1239", 
+                desc: "Chat with Admin", 
+                icon: MSG_SUPPORT_ICON, 
+                badgeText: "ONLINE",
+                badgeClass: "badge-sup",
+                active: true 
+            },
+            { 
                 id: "tg_channel", 
                 title: "Telegram Channel", 
-                desc: "অফিসিয়াল চ্যানেলে জয়েন করুন", 
-                icon: TG_SVG_ICON, 
+                desc: "Join Official Channel", 
+                icon: TG_OFFICIAL_SVG_ICON, 
                 badgeText: "JOIN",
                 badgeClass: "badge-tg",
                 active: true 
@@ -674,7 +996,7 @@
             { 
                 id: "yt_channel", 
                 title: "YouTube Channel", 
-                desc: "অফিসিয়াল চ্যানেল ভিজিট", 
+                desc: "Visit Official Channel", 
                 icon: YT_SVG_ICON, 
                 badgeText: "VISIT",
                 badgeClass: "badge-yt",
@@ -683,7 +1005,7 @@
             { 
                 id: "yt_videos", 
                 title: "YouTube Videos", 
-                desc: "ভিডিও থাম্বনেইল ও প্লেয়ার", 
+                desc: "Watch Latest Videos", 
                 icon: YT_SVG_ICON, 
                 badgeText: "WATCH",
                 badgeClass: "badge-yt",
@@ -692,7 +1014,7 @@
             { 
                 id: "whatsapp", 
                 title: "WhatsApp Account", 
-                desc: "হোয়াটসঅ্যাপ একাউন্ট", 
+                desc: "Account Buy/Sell", 
                 icon: "💬", 
                 badgeText: "COMING SOON",
                 badgeClass: "badge-soon",
@@ -701,7 +1023,7 @@
             { 
                 id: "proxy_vpn", 
                 title: "Proxy & VPN", 
-                desc: "প্রিমিয়াম প্রক্সি / ভিপিএন", 
+                desc: "Premium Proxy / VPN", 
                 icon: "🌐", 
                 badgeText: "COMING SOON",
                 badgeClass: "badge-soon",
@@ -758,6 +1080,16 @@
             }
         }
 
+        // সরাসরি আপনার টেলিগ্রাম ইনবক্স ওপেন করা
+        function openSupport() {
+            const url = "https://t.me/Moin1239";
+            if (tg && tg.openTelegramLink) {
+                tg.openTelegramLink(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+
         function openYouTubeVideosModal() {
             document.getElementById('ytVideoModal').style.display = 'flex';
         }
@@ -799,7 +1131,7 @@
 
         function onServiceClick(item) {
             if (!item.active) {
-                alert(`⚠️ '${item.title}' সার্ভিসটি শীঘ্রই চালু করা হবে! অনুগ্রহ করে অপেক্ষা করুন।`);
+                alert(`⚠️ '${item.title}' will be available soon!`);
                 return;
             }
             if (item.id === "dollar") {
@@ -808,6 +1140,10 @@
                 document.getElementById('coinModal').style.display = 'flex';
             } else if (item.id === "coinsta") {
                 document.getElementById('coinstaModal').style.display = 'flex';
+            } else if (item.id === "tfa_tool") {
+                document.getElementById('tfaModal').style.display = 'flex';
+            } else if (item.id === "support_card") {
+                openSupport();
             } else if (item.id === "yt_channel") {
                 openYouTubeChannel();
             } else if (item.id === "yt_videos") {
@@ -819,41 +1155,202 @@
 
         function closeModal(id) {
             document.getElementById(id).style.display = 'none';
+            if (id === 'tfaModal' && timerInterval) {
+                clearInterval(timerInterval);
+            }
         }
 
         function copyPayId() {
             navigator.clipboard.writeText(BINANCE_PAY_ID);
-            alert("✅ Binance UID কপি করা হয়েছে!");
+            alert("✅ Binance UID copied to clipboard!");
         }
 
         function copyCoinUser() {
             navigator.clipboard.writeText(TOPFOLLOW_USERNAME);
-            alert("✅ Top Coin ইউজারনেম কপি করা হয়েছে!");
+            alert("✅ Top Coin username copied!");
         }
 
         function copyCoinstaEmail() {
             navigator.clipboard.writeText(COINSTA_EMAIL);
-            alert("✅ Coinsta ইমেইল কপি করা হয়েছে!");
+            alert("✅ Coinsta Email copied!");
         }
 
         function calcDollarTaka() {
             const val = parseFloat(document.getElementById('dAmount').value) || 0;
             const total = val * DOLLAR_RATE;
-            document.getElementById('dollarPayoutTxt').innerText = `💰 আপনি পাবেন: ${total.toFixed(2)} টাকা (রেট: ${DOLLAR_RATE} টাকা)`;
-        }
-
-        function openSupport() {
-            if (tg && tg.openTelegramLink) {
-                tg.openTelegramLink(SUPPORT_LINK);
-            } else {
-                window.open(SUPPORT_LINK, '_blank');
-            }
+            document.getElementById('dollarPayoutTxt').innerText = `💰 You will receive: ${total.toFixed(2)} BDT (Rate: ${DOLLAR_RATE} Tk)`;
         }
 
         function previewFileName(inputId, textId) {
             const input = document.getElementById(inputId);
             if (input.files && input.files[0]) {
-                document.getElementById(textId).innerText = `✅ ছবি সিলেক্টেড: ${input.files[0].name.slice(0, 15)}...`;
+                document.getElementById(textId).innerText = `✅ Selected: ${input.files[0].name.slice(0, 15)}...`;
+            }
+        }
+
+        // 2FA TOTP ফাংশন
+        let timerInterval = null;
+
+        function showAlert(message) {
+            const modal = document.getElementById('customAlert');
+            const msgEl = document.getElementById('customAlertMessage');
+            if (modal && msgEl) {
+                msgEl.textContent = message;
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeCustomAlert() {
+            const modal = document.getElementById('customAlert');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function cleanKeyFormat(secret) {
+            if (!secret) return '';
+            return secret.replace(/[\s-]/g, '').toUpperCase();
+        }
+
+        function validateKey(secret) {
+            const cleanSecret = cleanKeyFormat(secret);
+            if (!cleanSecret) {
+                showAlert("Please enter your 2FA Secret Key.");
+                return false;
+            }
+            const base32Regex = /^[A-Z2-7]+=*$/;
+            if (!base32Regex.test(cleanSecret)) {
+                showAlert("Invalid Secret Key! Standard 2FA keys only contain letters A-Z and numbers 2-7. Please check your key.");
+                return false;
+            }
+            if (cleanSecret.replace(/=+$/, '').length < 8) {
+                showAlert("Secret Key is too short! Please paste a valid 2FA key.");
+                return false;
+            }
+            return true;
+        }
+
+        function generateCode() {
+            const input = document.getElementById('secretKey');
+            if (!input) return;
+            const rawSecret = input.value;
+            if (!validateKey(rawSecret)) return;
+
+            const cleanSecret = cleanKeyFormat(rawSecret);
+
+            try {
+                const totp = new OTPAuth.TOTP({
+                    secret: OTPAuth.Secret.fromBase32(cleanSecret),
+                    digits: 6,
+                    period: 30
+                });
+
+                const code = totp.generate();
+                const codeBox = document.getElementById('codeBox');
+                const outputContainer = document.getElementById('outputContainer');
+
+                codeBox.textContent = code;
+                outputContainer.style.display = 'block';
+
+                startTimer(cleanSecret);
+            } catch (error) {
+                showAlert("Invalid Secret Key! Please enter a valid 2FA key.");
+            }
+        }
+
+        async function pasteFromClipboard() {
+            const input = document.getElementById('secretKey');
+            if (!input) return;
+
+            if (tg && tg.readTextFromClipboard) {
+                tg.readTextFromClipboard((clipText) => {
+                    if (clipText && clipText.trim()) {
+                        input.value = cleanKeyFormat(clipText);
+                        generateCode();
+                    } else {
+                        input.focus();
+                    }
+                });
+                return;
+            }
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    const text = await navigator.clipboard.readText();
+                    if (text && text.trim()) {
+                        input.value = cleanKeyFormat(text);
+                        generateCode();
+                        return;
+                    }
+                }
+                input.focus();
+            } catch (err) {
+                input.focus();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('secretKey');
+            if (input) {
+                input.addEventListener('paste', () => {
+                    setTimeout(() => {
+                        input.value = cleanKeyFormat(input.value);
+                        if (validateKey(input.value)) {
+                            generateCode();
+                        }
+                    }, 50);
+                });
+            }
+        });
+
+        function startTimer(secret) {
+            if (timerInterval) clearInterval(timerInterval);
+
+            const progress = document.getElementById('cooldownProgress');
+            const codeBox = document.getElementById('codeBox');
+            const timerText = document.getElementById('timerText');
+
+            const totp = new OTPAuth.TOTP({
+                secret: OTPAuth.Secret.fromBase32(secret),
+                digits: 6,
+                period: 30
+            });
+
+            const updateDisplay = () => {
+                const epoch = Math.floor(Date.now() / 1000);
+                const remaining = 30 - (epoch % 30);
+                const percent = (remaining / 30) * 100;
+                
+                progress.style.width = percent + "%";
+                timerText.textContent = remaining;
+
+                try {
+                    const currentCode = totp.generate();
+                    if (codeBox.textContent !== currentCode) {
+                        codeBox.textContent = currentCode;
+                    }
+                } catch (e) {}
+            };
+
+            updateDisplay();
+            timerInterval = setInterval(updateDisplay, 1000);
+        }
+
+        function copyToClipboard() {
+            const codeBox = document.getElementById('codeBox');
+            const codeText = codeBox.textContent;
+
+            if (codeText && codeText !== "------") {
+                navigator.clipboard.writeText(codeText).then(() => {
+                    const copyHint = document.getElementById('copyHint');
+                    copyHint.textContent = "Copied to clipboard!";
+                    copyHint.style.color = "#10b981";
+
+                    setTimeout(() => {
+                        copyHint.textContent = "Tap code to copy";
+                        copyHint.style.color = "#64748b";
+                    }, 2000);
+                });
             }
         }
 
@@ -864,21 +1361,12 @@
             const phone = document.getElementById('dPhone').value;
             const photoInput = document.getElementById('dPhotoInput');
 
-            if (!amount || amount < 1) {
-                alert("⚠️ সঠিক ডলার পরিমাণ দিন (সর্বনিম্ন $1)।");
-                return;
-            }
-            if (!phone || phone.length < 11) {
-                alert("⚠️ সঠিক বিকাশ বা নগদ নম্বর লিখুন।");
-                return;
-            }
-            if (!photoInput.files || photoInput.files.length === 0) {
-                alert("⚠️ অনুগ্রহ করে পেমেন্টের স্ক্রিনশট আপলোড করুন!");
-                return;
-            }
+            if (!amount || amount < 1) { alert("⚠️ Please enter a valid dollar amount (Min $1)."); return; }
+            if (!phone || phone.length < 11) { alert("⚠️ Please enter a valid bKash/Nagad number."); return; }
+            if (!photoInput.files || photoInput.files.length === 0) { alert("⚠️ Please upload payment screenshot!"); return; }
 
             const submitBtn = document.getElementById('dSubmitBtn');
-            submitBtn.innerText = "⏳ আপলোড হচ্ছে...";
+            submitBtn.innerText = "⏳ Uploading...";
             submitBtn.disabled = true;
 
             const total = (amount * DOLLAR_RATE).toFixed(2);
@@ -896,10 +1384,7 @@
             formData.append('caption', captionMsg);
             formData.append('parse_mode', 'Markdown');
 
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-                method: "POST",
-                body: formData
-            })
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: "POST", body: formData })
             .then(res => res.json())
             .then(data => {
                 submitBtn.innerText = "✅ অর্ডার নিশ্চিত করুন";
@@ -909,17 +1394,16 @@
                     cur += parseFloat(amount);
                     localStorage.setItem('user_sold_dollars_' + currentUser.id, cur.toFixed(2));
                     updateStatsUI();
-
-                    alert("✅ আপনার ডলার অর্ডার ও স্ক্রিনশট সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে টাকা পাঠিয়ে দেবে।");
+                    alert("✅ Your dollar order and screenshot have been submitted successfully!");
                     closeModal('dollarModal');
                 } else {
-                    alert("❌ স্ক্রিনশট পাঠাতে সমস্যা হয়েছে, পুনরায় চেষ্টা করুন।");
+                    alert("❌ Submission error, please try again.");
                 }
             })
             .catch(() => {
                 submitBtn.innerText = "✅ অর্ডার নিশ্চিত করুন";
                 submitBtn.disabled = false;
-                alert("✅ অর্ডার সাবমিট হয়েছে!");
+                alert("✅ Order submitted successfully!");
                 closeModal('dollarModal');
             });
         }
@@ -932,21 +1416,12 @@
             const phone = document.getElementById('cPhone').value;
             const photoInput = document.getElementById('cPhotoInput');
 
-            if (!amount || amount < 5000) {
-                alert("⚠️ সর্বনিম্ন ৫০০০ কয়েন লিখতে হবে।");
-                return;
-            }
-            if (!phone || phone.length < 11) {
-                alert("⚠️ সঠিক বিকাশ বা নগদ নম্বর লিখুন।");
-                return;
-            }
-            if (!photoInput.files || photoInput.files.length === 0) {
-                alert("⚠️ অনুগ্রহ করে কয়েন পাঠানোর স্ক্রিনশট আপলোড করুন!");
-                return;
-            }
+            if (!amount || amount < 5000) { alert("⚠️ Minimum 5,000 coins required."); return; }
+            if (!phone || phone.length < 11) { alert("⚠️ Please enter a valid bKash/Nagad number."); return; }
+            if (!photoInput.files || photoInput.files.length === 0) { alert("⚠️ Please upload transfer screenshot!"); return; }
 
             const submitBtn = document.getElementById('cSubmitBtn');
-            submitBtn.innerText = "⏳ আপলোড হচ্ছে...";
+            submitBtn.innerText = "⏳ Uploading...";
             submitBtn.disabled = true;
 
             const captionMsg = `🔔 **নতুন Top Coin বিক্রির অর্ডার (Web App)!**\n\n` +
@@ -963,10 +1438,7 @@
             formData.append('caption', captionMsg);
             formData.append('parse_mode', 'Markdown');
 
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-                method: "POST",
-                body: formData
-            })
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: "POST", body: formData })
             .then(res => res.json())
             .then(data => {
                 submitBtn.innerText = "✅ কয়েন অর্ডার নিশ্চিত করুন";
@@ -976,17 +1448,16 @@
                     cur += parseInt(amount);
                     localStorage.setItem('user_sold_coins_' + currentUser.id, cur);
                     updateStatsUI();
-
-                    alert("✅ আপনার Top Coin অর্ডার ও স্ক্রিনশট সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে টাকা পাঠিয়ে দেবে।");
+                    alert("✅ Your Top Coin order and screenshot have been submitted successfully!");
                     closeModal('coinModal');
                 } else {
-                    alert("❌ স্ক্রিনশট পাঠাতে সমস্যা হয়েছে, পুনরায় চেষ্টা করুন।");
+                    alert("❌ Submission error, please try again.");
                 }
             })
             .catch(() => {
                 submitBtn.innerText = "✅ কয়েন অর্ডার নিশ্চিত করুন";
                 submitBtn.disabled = false;
-                alert("✅ অর্ডার সাবমিট হয়েছে!");
+                alert("✅ Order submitted successfully!");
                 closeModal('coinModal');
             });
         }
@@ -999,21 +1470,12 @@
             const phone = document.getElementById('csPhone').value;
             const photoInput = document.getElementById('csPhotoInput');
 
-            if (!amount || amount < 5000) {
-                alert("⚠️ সর্বনিম্ন ৫০০০ Coinsta কয়েন লিখতে হবে।");
-                return;
-            }
-            if (!phone || phone.length < 11) {
-                alert("⚠️ সঠিক বিকাশ বা নগদ নম্বর লিখুন।");
-                return;
-            }
-            if (!photoInput.files || photoInput.files.length === 0) {
-                alert("⚠️ অনুগ্রহ করে Coinsta কয়েন পাঠানোর স্ক্রিনশট আপলোড করুন!");
-                return;
-            }
+            if (!amount || amount < 5000) { alert("⚠️ Minimum 5,000 Coinsta coins required."); return; }
+            if (!phone || phone.length < 11) { alert("⚠️ Please enter a valid bKash/Nagad number."); return; }
+            if (!photoInput.files || photoInput.files.length === 0) { alert("⚠️ Please upload Coinsta screenshot!"); return; }
 
             const submitBtn = document.getElementById('csSubmitBtn');
-            submitBtn.innerText = "⏳ আপলোড হচ্ছে...";
+            submitBtn.innerText = "⏳ Uploading...";
             submitBtn.disabled = true;
 
             const captionMsg = `🔔 **নতুন Coinsta কয়েন বিক্রির অর্ডার (Web App)!**\n\n` +
@@ -1030,10 +1492,7 @@
             formData.append('caption', captionMsg);
             formData.append('parse_mode', 'Markdown');
 
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-                method: "POST",
-                body: formData
-            })
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: "POST", body: formData })
             .then(res => res.json())
             .then(data => {
                 submitBtn.innerText = "✅ Coinsta অর্ডার নিশ্চিত করুন";
@@ -1043,17 +1502,16 @@
                     cur += parseInt(amount);
                     localStorage.setItem('user_sold_coins_' + currentUser.id, cur);
                     updateStatsUI();
-
-                    alert("✅ আপনার Coinsta কয়েন অর্ডার ও স্ক্রিনশট সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে টাকা পাঠিয়ে দেবে।");
+                    alert("✅ Your Coinsta coin order has been submitted successfully!");
                     closeModal('coinstaModal');
                 } else {
-                    alert("❌ স্ক্রিনশট পাঠাতে সমস্যা হয়েছে, পুনরায় চেষ্টা করুন।");
+                    alert("❌ Submission error, please try again.");
                 }
             })
             .catch(() => {
                 submitBtn.innerText = "✅ Coinsta অর্ডার নিশ্চিত করুন";
                 submitBtn.disabled = false;
-                alert("✅ অর্ডার সাবমিট হয়েছে!");
+                alert("✅ Order submitted successfully!");
                 closeModal('coinstaModal');
             });
         }
