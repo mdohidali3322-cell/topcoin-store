@@ -85,7 +85,7 @@
         }
         .stat-card {
             background: #fff;
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 10px 14px;
             border: 1px solid #ffedd5;
             box-shadow: 0 2px 8px rgba(255, 120, 45, 0.05);
@@ -110,13 +110,13 @@
             padding: 10px 18px;
         }
         .search-box {
-            border-radius: 22px;
+            border-radius: 12px;
             padding: 2px;
             background: linear-gradient(90deg, #38bdf8, #ec4899, #f59e0b, #10b981);
         }
         .search-inner {
             background: #fff;
-            border-radius: 20px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             padding: 8px 12px;
@@ -130,48 +130,51 @@
             color: #334155;
         }
 
-        /* ৩. অ্যাডস্ট্রা ডাইরেক্ট লিংক ব্যানার */
+        /* ৩. প্রিমিয়াম স্লিম সাইজ ও সোজা কোনার অ্যাডস্ট্রা ব্যানার (১০০% ইংলিশ) */
         .banner-container {
-            padding: 6px 18px 12px 18px;
+            padding: 6px 18px 10px 18px;
         }
-        .neon-banner {
-            background: radial-gradient(circle at top, #161c47, #080a1a);
-            border-radius: 20px;
-            padding: 18px 16px;
-            border: 1.5px solid #2563eb;
-            box-shadow: 0 0 20px rgba(37, 99, 235, 0.35);
+        .ad-banner-compact {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 45%, #db2777 100%);
+            border-radius: 10px;
+            padding: 12px 14px;
+            border: 1.5px solid #fbbf24;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
             text-align: center;
             cursor: pointer;
-            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.15s ease;
         }
-        .neon-banner:active {
+        .ad-banner-compact:active {
             transform: scale(0.98);
         }
         .banner-badge {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: rgba(30, 58, 138, 0.7);
-            border: 1px solid #3b82f6;
-            color: #fde047;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 2px 10px;
-            border-radius: 10px;
-            margin-bottom: 6px;
+            background: #ffffff;
+            color: #b91c1c;
+            font-size: 9.5px;
+            font-weight: 900;
+            padding: 2px 9px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
         }
         .banner-title {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 900;
-            background: linear-gradient(180deg, #67e8f9 0%, #38bdf8 40%, #f472b6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-style: italic;
+            color: #ffffff;
+            letter-spacing: 0.4px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            line-height: 1.2;
         }
         .banner-sub {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 4px;
+            font-size: 11px;
+            color: #fde047;
+            font-weight: 700;
+            margin-top: 3px;
         }
 
         /* ৪. সার্ভিস লিস্ট (গ্রিড) */
@@ -189,11 +192,11 @@
         }
         .service-card {
             background: #fff;
-            border-radius: 20px;
-            padding: 18px 14px;
+            border-radius: 14px;
+            padding: 16px 12px;
             text-align: center;
             border: 1px solid #f1f5f9;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
             cursor: pointer;
             position: relative;
             transition: transform 0.2s;
@@ -206,16 +209,14 @@
             opacity: 0.8;
         }
         .card-icon {
-            font-size: 34px;
+            font-size: 32px;
             margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 42px;
+            height: 40px;
         }
-        .card-icon svg {
-            display: block;
-        }
+        .card-icon svg { display: block; }
         .card-title {
             font-size: 13px;
             font-weight: 800;
@@ -228,12 +229,12 @@
         }
         .badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 9px;
+            top: 8px;
+            right: 8px;
+            font-size: 8.5px;
             font-weight: 800;
-            padding: 2px 7px;
-            border-radius: 8px;
+            padding: 2px 6px;
+            border-radius: 6px;
         }
         .badge-active { background: #dcfce7; color: #15803d; }
         .badge-yt { background: #ffe4e6; color: #e11d48; }
@@ -242,34 +243,43 @@
         .badge-2fa { background: #fef08a; color: #854d0e; }
         .badge-soon { background: #f1f5f9; color: #64748b; }
 
-        /* ৫. পপ-আপ ফর্ম */
+        /* ৫. স্ক্রিনের সেন্টারে ফ্লোটিং পপ-আপ (Center Modal) */
         .modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(5px);
             display: none;
-            align-items: flex-end;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
             z-index: 200;
         }
         .modal-body {
             background: #fff;
             width: 100%;
-            border-radius: 26px 26px 0 0;
-            padding: 22px 18px;
+            max-width: 380px;
+            border-radius: 18px;
+            padding: 20px 16px;
             max-height: 85vh;
             overflow-y: auto;
-            animation: slide 0.25s ease-out;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        @keyframes slide { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes popIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
         .form-row { margin-bottom: 12px; }
         .form-row label { font-size: 12px; font-weight: 700; display: block; margin-bottom: 5px; }
-        .form-row input, .form-row select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 13px; outline: none; }
+        .form-row input, .form-row select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; outline: none; }
         
         .upload-box {
             border: 2px dashed var(--primary-orange);
             background: #fffaf5;
             padding: 12px;
-            border-radius: 12px;
+            border-radius: 10px;
             text-align: center;
             cursor: pointer;
         }
@@ -285,14 +295,14 @@
             gap: 6px;
         }
 
-        .pay-card { background: #fdfaf6; border: 1px dashed var(--primary-orange); padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .submit-btn { width: 100%; background: #0f172a; color: #fff; padding: 14px; border: none; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; }
+        .pay-card { background: #fdfaf6; border: 1px dashed var(--primary-orange); padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .submit-btn { width: 100%; background: #0f172a; color: #fff; padding: 13px; border: none; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; }
 
         .yt-thumb-box {
             position: relative;
             width: 100%;
-            height: 190px;
-            border-radius: 16px;
+            height: 180px;
+            border-radius: 12px;
             overflow: hidden;
             margin-bottom: 14px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
@@ -304,44 +314,44 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 58px; height: 40px;
+            width: 55px; height: 38px;
             background: #ff0000;
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 20px;
+            font-size: 18px;
             box-shadow: 0 4px 15px rgba(255,0,0,0.5);
         }
 
-        /* 2FA স্টাইল ও এনিমেশন */
+        /* ======================================================== */
+        /* --- 2FA স্টাইল: 📋 কপি ও ✕ ডিলিট বাটন ডিজাইন --- */
+        /* ======================================================== */
         .two-factor-app-wrapper {
             background-color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 4px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            box-sizing: border-box;
+            padding: 2px;
             width: 100%;
         }
         .two-factor-app-wrapper .card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            padding: 20px 16px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            padding: 18px 14px;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
             width: 100%;
             box-sizing: border-box;
         }
         .two-factor-app-wrapper .main-title {
-            font-size: 19px !important;
+            font-size: 18px !important;
             font-weight: 900;
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             line-height: 1.3;
             text-align: center !important;
             display: block !important;
@@ -353,14 +363,14 @@
             animation: rainbow-flow 12s linear infinite;
         }
         .two-factor-app-wrapper .input-group {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             text-align: left;
         }
         .two-factor-app-wrapper .input-label {
             display: block;
-            font-size: 13px;
+            font-size: 12.5px;
             color: #4a5568;
-            margin-bottom: 8px;
+            margin-bottom: 7px;
             font-weight: 700;
         }
         .two-factor-app-wrapper .input-wrapper {
@@ -371,45 +381,68 @@
         }
         .two-factor-app-wrapper .input-field {
             width: 100%;
-            padding: 12px 85px 12px 14px;
-            background: #ffffff;
+            padding: 12px 75px 12px 12px;
+            background: #f8fafc;
             border: 1.5px solid #cbd5e1;
-            border-radius: 12px;
+            border-radius: 10px;
             color: #1a202c;
-            font-size: 14px;
+            font-size: 13.5px;
             outline: none;
             box-sizing: border-box;
             transition: all 0.3s ease;
-            font-weight: 600;
+            font-weight: 700;
         }
         .two-factor-app-wrapper .input-field:focus {
-            border-color: #ff3366;
-            box-shadow: 0 0 8px rgba(255, 51, 102, 0.2);
+            border-color: #ff0080;
+            background: #fff;
+            box-shadow: 0 0 8px rgba(255, 0, 128, 0.2);
         }
-        .two-factor-app-wrapper .paste-btn {
+
+        /* 📋 ও ✕ অ্যাকশন বাটন গ্রুপ */
+        .key-action-btns {
             position: absolute;
-            right: 6px;
-            border: none !important;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #ffffff !important;
-            cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(255, 51, 102, 0.3);
-            background: linear-gradient(90deg, #ff3366, #ff7b00, #ffeb3b, #00e676, #00b0ff, #651fff, #f50057, #ff3366);
-            background-size: 800% 100%;
-            animation: rainbow-flow 12s linear infinite;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+            align-items: center;
+            gap: 5px;
+            z-index: 5;
         }
-        .two-factor-app-wrapper .paste-btn:active { transform: scale(0.95); }
+        .key-icon-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            user-select: none;
+        }
+        .copy-btn-mini {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+        .copy-btn-mini:active {
+            transform: scale(0.9);
+        }
+        .clear-btn-mini {
+            background: #fee2e2;
+            color: #ef4444;
+            font-weight: 900;
+        }
+        .clear-btn-mini:active {
+            transform: scale(0.9);
+        }
 
         .btn-container {
             display: flex;
             flex-wrap: wrap;
             gap: 14px;
             justify-content: center;
-            margin: 20px 0 10px 0;
+            margin: 18px 0 10px 0;
         }
         .float-wrap-download {
             animation: bounce-effect 3s ease-in-out infinite;
@@ -420,49 +453,49 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 13px 24px;
-            font-size: 16px;
+            gap: 8px;
+            padding: 12px 20px;
+            font-size: 15px;
             font-weight: 800;
             color: #ffffff !important;
             text-decoration: none !important;
             border: none !important;
             outline: none !important;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             width: 100%;
             background: linear-gradient(90deg, #ff3366, #ff7b00, #ffeb3b, #00e676, #00b0ff, #651fff, #f50057, #ff3366);
             background-size: 800% 100%;
             animation: rainbow-flow 12s linear infinite;
         }
-        .premium-btn svg { width: 22px; height: 22px; fill: #ffffff; }
+        .premium-btn svg { width: 20px; height: 20px; fill: #ffffff; }
 
         .two-factor-app-wrapper .output-container {
             display: none;
-            margin-top: 20px;
+            margin-top: 18px;
             background: #f8fafc;
-            padding: 18px 14px;
-            border-radius: 16px;
+            padding: 16px 12px;
+            border-radius: 12px;
             border: 2px dashed #cbd5e1;
             text-align: center;
         }
         .two-factor-app-wrapper .output-label {
             margin-bottom: 5px;
             color: #64748b;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
         }
         .two-factor-app-wrapper .code-box {
-            font-size: 34px;
+            font-size: 32px;
             font-weight: 900;
             letter-spacing: 4px;
-            padding: 10px 16px;
+            padding: 8px 14px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin: 6px 0;
+            margin: 4px 0;
             line-height: 1;
             background: linear-gradient(90deg, #ff3366, #ff7b00, #ffeb3b, #00e676, #00b0ff, #651fff, #f50057, #ff3366);
             background-size: 800% 100%;
@@ -471,16 +504,16 @@
             animation: rainbow-flow 12s linear infinite, bounce-effect 3s ease-in-out infinite;
         }
         .two-factor-app-wrapper .copy-hint {
-            font-size: 12px;
+            font-size: 11.5px;
             color: #64748b;
             font-weight: 600;
         }
         .two-factor-app-wrapper .cooldown-bar {
             width: 100%;
-            height: 6px;
+            height: 5px;
             background: #e2e8f0;
-            border-radius: 4px;
-            margin-top: 14px;
+            border-radius: 3px;
+            margin-top: 12px;
             overflow: hidden;
         }
         .two-factor-app-wrapper .cooldown-progress {
@@ -490,9 +523,9 @@
             transition: width 1s linear;
         }
         .two-factor-app-wrapper .timer-text-wrap {
-            font-size: 12px;
+            font-size: 11.5px;
             color: #64748b;
-            margin-top: 8px;
+            margin-top: 7px;
             font-weight: 700;
         }
         .two-factor-app-wrapper .timer-text-wrap span { color: #ff3366; }
@@ -503,7 +536,7 @@
         }
         @keyframes bounce-effect {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-5px); }
         }
 
         .custom-modal-overlay {
@@ -518,8 +551,8 @@
         }
         .custom-modal {
             background: #ffffff;
-            border-radius: 16px;
-            padding: 24px 20px;
+            border-radius: 14px;
+            padding: 22px 18px;
             width: calc(100% - 40px);
             max-width: 320px;
             text-align: center;
@@ -527,22 +560,22 @@
             border: 1px solid #cbd5e1;
         }
         .custom-modal h3 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             background: linear-gradient(90deg, #ff3366, #ff7b00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .custom-modal p { font-size: 13px; color: #475569; margin-bottom: 18px; line-height: 1.4; }
+        .custom-modal p { font-size: 13px; color: #475569; margin-bottom: 16px; line-height: 1.4; }
         .custom-modal button {
             background: linear-gradient(90deg, #ff3366, #ff7b00);
             color: #fff;
             border: none;
-            padding: 9px 28px;
+            padding: 8px 24px;
             border-radius: 20px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
         }
 
@@ -550,7 +583,7 @@
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
-            height: 65px;
+            height: 62px;
             background: #fff;
             display: flex;
             justify-content: space-around;
@@ -584,8 +617,8 @@
                 <div class="user-status">● Verified User</div>
             </div>
         </div>
-        <div style="font-size: 12px; background: #ffedd5; color: var(--primary-orange); padding: 5px 10px; border-radius: 10px; font-weight: 800; cursor: pointer;" onclick="openSupport()">
-            💬 Support @Moin1239
+        <div style="font-size: 12px; background: #ffedd5; color: var(--primary-orange); padding: 5px 12px; border-radius: 8px; font-weight: 800; cursor: pointer;" onclick="openSupport()">
+            💬 Support
         </div>
     </div>
 
@@ -611,12 +644,12 @@
         </div>
     </div>
 
-    <!-- ৩. অ্যাডস্ট্রা ডাইরেক্ট লিংক ব্যানার -->
+    <!-- ৩. প্রিমিয়াম স্লিম সাইজ ও সোজা কোনা অ্যাডস্ট্রা ব্যানার (১০০% ইংলিশ) -->
     <div class="banner-container">
-        <div class="neon-banner" onclick="handleAdClick()">
-            <div class="banner-badge">👑 Special Sponsor Deals</div>
-            <div class="banner-title">Claim Daily Bonus</div>
-            <div class="banner-sub">👉 Click here to check special offer</div>
+        <div class="ad-banner-compact" onclick="handleAdClick()">
+            <div class="banner-badge">🎁 SPECIAL REWARD • 100% FREE</div>
+            <div class="banner-title">Claim $5 - $50 Daily Bonus!</div>
+            <div class="banner-sub">Tap here to unlock your lucky cash gift now</div>
         </div>
     </div>
 
@@ -658,7 +691,7 @@
                     <div style="font-size: 11px; color: #64748b;">আমাদের Binance UID:</div>
                     <div style="font-size: 15px; font-weight: 800;" id="payIdText">835868155</div>
                 </div>
-                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyPayId()">📋 Copy</button>
+                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; cursor: pointer;" onclick="copyPayId()">📋 Copy</button>
             </div>
 
             <div class="form-row">
@@ -669,7 +702,7 @@
                 </div>
             </div>
 
-            <div id="dollarPayoutTxt" style="background: #ecfdf5; padding: 10px; border-radius: 10px; font-size: 13px; color: #047857; font-weight: 700; margin-bottom: 14px;">
+            <div id="dollarPayoutTxt" style="background: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 13px; color: #047857; font-weight: 700; margin-bottom: 14px;">
                 💰 আপনি পাবেন: ০.০০ টাকা (রেট: ১২০ টাকা)
             </div>
 
@@ -716,7 +749,7 @@
                     <div style="font-size: 11px; color: #64748b;">Top Coin পাঠানোর ইউজারনেম:</div>
                     <div style="font-size: 15px; font-weight: 800;" id="coinUserText">top.coin.buyer</div>
                 </div>
-                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyCoinUser()">📋 Copy</button>
+                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; cursor: pointer;" onclick="copyCoinUser()">📋 Copy</button>
             </div>
 
             <div class="form-row">
@@ -770,7 +803,7 @@
                     <div style="font-size: 11px; color: #64748b;">Coinsta পাঠানোর ইমেইল (Email):</div>
                     <div style="font-size: 14px; font-weight: 800; word-break: break-all;" id="coinstaEmailText">osimali745@gmail.com</div>
                 </div>
-                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="copyCoinstaEmail()">📋 Copy</button>
+                <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; cursor: pointer;" onclick="copyCoinstaEmail()">📋 Copy</button>
             </div>
 
             <div class="form-row">
@@ -785,11 +818,11 @@
         </div>
     </div>
 
-    <!-- ৮. 2FA AUTHENTICATOR মোডাল (১০০% ক্লিন ও প্রফেশনাল ইংরেজি) -->
+    <!-- ৮. 2FA AUTHENTICATOR মোডাল (📋 কপি ও ✕ ডিলিট বাটন সহ) -->
     <div class="modal" id="tfaModal">
-        <div class="modal-body" style="padding: 10px;">
-            <div style="display: flex; justify-content: flex-end; padding: 6px 10px 0 0;">
-                <span style="font-size: 24px; cursor: pointer; color: #64748b;" onclick="closeModal('tfaModal')">✕</span>
+        <div class="modal-body" style="padding: 14px;">
+            <div style="display: flex; justify-content: flex-end; padding: 0 4px 6px 0;">
+                <span style="font-size: 22px; cursor: pointer; color: #64748b;" onclick="closeModal('tfaModal')">✕</span>
             </div>
 
             <div class="two-factor-app-wrapper">
@@ -799,8 +832,12 @@
                     <div class="input-group">
                         <label class="input-label" for="secretKey">Enter 2FA Secret Key:</label>
                         <div class="input-wrapper">
-                            <input type="text" id="secretKey" class="input-field" placeholder="Paste your 2FA Secret Key here..." autocomplete="off">
-                            <button type="button" class="paste-btn" onclick="pasteFromClipboard()">Paste</button>
+                            <input type="text" id="secretKey" class="input-field" placeholder="Enter / Paste Secret Key here..." autocomplete="off" oninput="toggleInputActionBtns()">
+                            <!-- কপি (📋) ও ডিলিট (✕) বাটন গ্রুপ -->
+                            <div id="keyActionBtns" class="key-action-btns">
+                                <span class="key-icon-btn copy-btn-mini" onclick="copySecretKey(event)" title="Copy Key">📋</span>
+                                <span class="key-icon-btn clear-btn-mini" onclick="clearSecretKey(event)" title="Clear Key">✕</span>
+                            </div>
                         </div>
                     </div>
 
@@ -878,7 +915,7 @@
         </div>
         <div class="nav-link" onclick="openSupport()">
             <span style="font-size: 20px;">💬</span>
-            <span>Support (@Moin1239)</span>
+            <span>Support</span>
         </div>
     </div>
 
@@ -891,7 +928,7 @@
         const TOPFOLLOW_USERNAME = "top.coin.buyer";
         const COINSTA_EMAIL = "osimali745@gmail.com";
         const DOLLAR_RATE = 120;
-        const SUPPORT_LINK = "https://t.me/Moin1239"; // আপনার পার্সোনাল আইডি লিংক
+        const SUPPORT_LINK = "https://t.me/Moin1239"; 
         const TELEGRAM_CHANNEL_LINK = "https://t.me/Moin_Raj13";
 
         const YOUTUBE_CHANNEL_LINK = "https://youtube.com/@moinraj7424?si=TJ2xDDLmlnwvKIGI"; 
@@ -907,7 +944,6 @@
             </svg>
         `;
 
-        // টেলিগ্রামের অফিশিয়াল আসল ২৪০x২৪০ পেপার-প্লেন এইচডি লোগো
         const TG_OFFICIAL_SVG_ICON = `
             <svg viewBox="0 0 240 240" width="38" height="38">
                 <circle cx="120" cy="120" r="120" fill="#24A1DE"/>
@@ -922,7 +958,6 @@
             </svg>
         `;
 
-        // মেসেঞ্জারের মতো প্রফেশনাল ব্লু চ্যাট আইকন
         const MSG_SUPPORT_ICON = `
             <svg viewBox="0 0 24 24" width="38" height="38">
                 <defs>
@@ -937,7 +972,7 @@
             </svg>
         `;
 
-        // কার্ড লিস্ট
+        // সার্ভিস কার্ড লিস্ট
         const ALL_SERVICES = [
             { 
                 id: "dollar", 
@@ -977,8 +1012,8 @@
             },
             { 
                 id: "support_card", 
-                title: "Support @Moin1239", 
-                desc: "Chat with Admin", 
+                title: "Support", 
+                desc: "Direct Chat with Admin", 
                 icon: MSG_SUPPORT_ICON, 
                 badgeText: "ONLINE",
                 badgeClass: "badge-sup",
@@ -1080,7 +1115,6 @@
             }
         }
 
-        // সরাসরি আপনার টেলিগ্রাম ইনবক্স ওপেন করা
         function openSupport() {
             const url = "https://t.me/Moin1239";
             if (tg && tg.openTelegramLink) {
@@ -1142,6 +1176,7 @@
                 document.getElementById('coinstaModal').style.display = 'flex';
             } else if (item.id === "tfa_tool") {
                 document.getElementById('tfaModal').style.display = 'flex';
+                toggleInputActionBtns();
             } else if (item.id === "support_card") {
                 openSupport();
             } else if (item.id === "yt_channel") {
@@ -1188,7 +1223,9 @@
             }
         }
 
-        // 2FA TOTP ফাংশন
+        // ========================================================
+        // --- ১০০% কার্যকরী 2FA কপি ও ক্লিয়ার ফাংশন ---
+        // ========================================================
         let timerInterval = null;
 
         function showAlert(message) {
@@ -1204,6 +1241,85 @@
             const modal = document.getElementById('customAlert');
             if (modal) {
                 modal.style.display = 'none';
+            }
+        }
+
+        function toggleInputActionBtns() {
+            const input = document.getElementById('secretKey');
+            const actionBtns = document.getElementById('keyActionBtns');
+            if (input && actionBtns) {
+                actionBtns.style.display = input.value.trim().length > 0 ? 'flex' : 'none';
+            }
+        }
+
+        // ১০০% নিশ্চিত কি কপি করার ফাংশন (মোবাইল ও টেলিগ্রামের জন্য ফিক্সড)
+        function copySecretKey(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            const input = document.getElementById('secretKey');
+            if (!input || !input.value.trim()) return;
+
+            const textToCopy = input.value.trim();
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    handleKeyCopyFeedback();
+                }).catch(() => {
+                    fallbackCopyExec(textToCopy);
+                });
+            } else {
+                fallbackCopyExec(textToCopy);
+            }
+        }
+
+        // ব্যাকআপ কপি মেথড (যাতে কোনো মোবাইলে মিস না হয়)
+        function fallbackCopyExec(text) {
+            try {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.position = "fixed";
+                ta.style.left = "-9999px";
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                handleKeyCopyFeedback();
+            } catch (err) {
+                alert("✅ Secret Key: " + text);
+            }
+        }
+
+        // কপি হলে 📋 বদলে সবুজ টিক (✓) হবে
+        function handleKeyCopyFeedback() {
+            const btn = document.querySelector('.copy-btn-mini');
+            if (btn) {
+                btn.innerText = "✓";
+                btn.style.background = "#bbf7d0";
+                btn.style.color = "#15803d";
+                setTimeout(() => {
+                    btn.innerText = "📋";
+                    btn.style.background = "#e0f2fe";
+                    btn.style.color = "#0284c7";
+                }, 1500);
+            }
+            alert("✅ Secret Key copied to clipboard!");
+        }
+
+        function clearSecretKey(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            const input = document.getElementById('secretKey');
+            if (input) {
+                input.value = '';
+                toggleInputActionBtns();
+                document.getElementById('outputContainer').style.display = 'none';
+                if (timerInterval) clearInterval(timerInterval);
+                input.focus();
             }
         }
 
@@ -1258,43 +1374,13 @@
             }
         }
 
-        async function pasteFromClipboard() {
-            const input = document.getElementById('secretKey');
-            if (!input) return;
-
-            if (tg && tg.readTextFromClipboard) {
-                tg.readTextFromClipboard((clipText) => {
-                    if (clipText && clipText.trim()) {
-                        input.value = cleanKeyFormat(clipText);
-                        generateCode();
-                    } else {
-                        input.focus();
-                    }
-                });
-                return;
-            }
-
-            try {
-                if (navigator.clipboard && navigator.clipboard.readText) {
-                    const text = await navigator.clipboard.readText();
-                    if (text && text.trim()) {
-                        input.value = cleanKeyFormat(text);
-                        generateCode();
-                        return;
-                    }
-                }
-                input.focus();
-            } catch (err) {
-                input.focus();
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             const input = document.getElementById('secretKey');
             if (input) {
                 input.addEventListener('paste', () => {
                     setTimeout(() => {
                         input.value = cleanKeyFormat(input.value);
+                        toggleInputActionBtns();
                         if (validateKey(input.value)) {
                             generateCode();
                         }
